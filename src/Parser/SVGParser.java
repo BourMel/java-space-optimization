@@ -34,6 +34,7 @@ class SVGParser {
     fetchContent();
     parseXMLTag();
     System.out.println(content);
+    read_tag();
     System.out.println("==== ENDED PARSING ====");
     for (ParserAttribute a: xmlTag) {
       System.out.println(a);
@@ -42,13 +43,12 @@ class SVGParser {
   }
 
   private Stream<String> fetchStream() throws IOException {
-    Stream<String> stream;
     if (url.startsWith("http")) {
       InputStream is = new URL(url).openConnection().getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-      return stream = reader.lines();
+      return reader.lines();
     } else {
-      return stream =  Files.lines(Paths.get(url));
+      return Files.lines(Paths.get(url));
     }
   }
 
@@ -164,6 +164,23 @@ class SVGParser {
       }
     }
     return attr;
+  }
+
+  private void read_tag() {
+    System.out.println("---- start: reading SVG tag");
+    read_string("<svg");
+    read_spaces();
+    Vector<ParserAttribute> svgAttrs = new Vector<ParserAttribute>();
+    ParserAttribute attr;
+    while ((attr = read_attribute()) != null) {
+      svgAttrs.addElement(attr);
+      read_spaces();
+    }
+
+    for (ParserAttribute a: svgAttrs) {
+      System.out.println(a);
+    }
+    System.out.println("---- end: reading SVG tag");
   }
 
   // getters / setters
