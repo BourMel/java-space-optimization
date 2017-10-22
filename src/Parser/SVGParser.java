@@ -1,6 +1,11 @@
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.stream.Stream;
 import java.util.Vector;
 
 class SVGParser {
@@ -37,10 +42,17 @@ class SVGParser {
 
   public void fetchContent() throws IOException {
     StringBuilder contentBuilder = new StringBuilder();
-    Files.lines(Paths.get(url))
-         .map(s -> s.trim())
-         .filter(s -> !s.isEmpty())
-         .forEach(s -> contentBuilder.append(s).append(" "));
+    Stream<String> stream;
+    if (url.startsWith("http")) {
+      InputStream is = new URL(url).openConnection().getInputStream();
+      BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+      stream = reader.lines();
+    } else {
+      stream =  Files.lines(Paths.get(url));
+    }
+    stream.map(s -> s.trim())
+          .filter(s -> !s.isEmpty())
+          .forEach(s -> contentBuilder.append(s).append(" "));
     content = contentBuilder.toString()
                             .replaceAll("<!--(.*?)-->", "")
                             .replaceAll("  *", " ")
