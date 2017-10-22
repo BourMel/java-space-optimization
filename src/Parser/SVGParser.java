@@ -38,18 +38,23 @@ class SVGParser {
     for (ParserAttribute a: xmlTag) {
       System.out.println(a);
     }
+    System.out.println(" => cursor = " + cursor);
   }
 
-  public void fetchContent() throws IOException {
-    StringBuilder contentBuilder = new StringBuilder();
+  private Stream<String> fetchStream() throws IOException {
     Stream<String> stream;
     if (url.startsWith("http")) {
       InputStream is = new URL(url).openConnection().getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-      stream = reader.lines();
+      return stream = reader.lines();
     } else {
-      stream =  Files.lines(Paths.get(url));
+      return stream =  Files.lines(Paths.get(url));
     }
+  }
+
+  private void fetchContent() throws IOException {
+    StringBuilder contentBuilder = new StringBuilder();
+    Stream<String> stream = fetchStream();
     stream.map(s -> s.trim())
           .filter(s -> !s.isEmpty())
           .forEach(s -> contentBuilder.append(s).append(" "));
