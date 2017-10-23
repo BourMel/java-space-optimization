@@ -18,6 +18,7 @@ class SVGParser {
   private char lastChar;
 
   private Vector<ParserAttribute> xmlTag;
+  private ParserTag svgTag;
 
   // constructors
   public SVGParser() {
@@ -34,12 +35,15 @@ class SVGParser {
     fetchContent();
     parseXMLTag();
     System.out.println(content);
-    read_tag();
+    read_svgTag();
     System.out.println("==== ENDED PARSING ====");
     for (ParserAttribute a: xmlTag) {
       System.out.println(a);
     }
     System.out.println(" => cursor = " + cursor);
+
+    System.out.println("======= RESULTS: ======");
+    System.out.println(svgTag);
   }
 
   private Stream<String> fetchStream() throws IOException {
@@ -59,6 +63,7 @@ class SVGParser {
           .filter(s -> !s.isEmpty())
           .forEach(s -> contentBuilder.append(s).append(" "));
     content = contentBuilder.toString()
+                            .replaceAll("  *", " ")
                             .replaceAll("<!--(.*?)-->", "")
                             .replaceAll("  *", " ")
                             .replaceAll("> <", "><")
@@ -95,9 +100,7 @@ class SVGParser {
   // on incrémente le curseur pour chaque "espace" rencontré
   private void read_spaces() {
     if (!isContent()) error("No content!");
-    while (cursor < contentLength
-      && (content.charAt(cursor) == ' '
-      || content.charAt(cursor) == ' ')) cursor++;
+    while (cursor < contentLength && content.charAt(cursor) == ' ') cursor++;
   }
 
   private boolean read_char(char c) {
@@ -135,7 +138,7 @@ class SVGParser {
   private boolean isCharForAttrValue(boolean allowSpaces, char separator) {
     char currentChar = content.charAt(cursor);
     if (allowSpaces) return currentChar != separator;
-    else return currentChar != ' ' && currentChar != ' ';
+    else return currentChar != ' ';
   }
 
   private ParserAttribute read_attribute() {
@@ -147,7 +150,7 @@ class SVGParser {
       cursor++;
     }
     if (attrName.length() > 0) {
-      attr = new ParserAttribute(attrName.toString());
+      attr = new ParserAttribute(attrName.toString().toLowerCase());
       if (read_char('=')) {
         boolean hasQuote = read_char('"') || read_char('\'');
         char separator = lastChar;
@@ -166,21 +169,70 @@ class SVGParser {
     return attr;
   }
 
-  private void read_tag() {
-    System.out.println("---- start: reading SVG tag");
-    read_string("<svg");
+  private void read_svgTag() {
+    svgTag = read_tag("svg");
+    if (svgTag == null) error("No SVG tag found.");
+  }
+
+  private ParserTag read_tag() {
+    return read_tag("");
+  }
+
+  private String read_tagString() {
     read_spaces();
-    Vector<ParserAttribute> svgAttrs = new Vector<ParserAttribute>();
+    lastChar = content.charAt(cursor++);
+    StringBuilder s = new StringBuilder();
+    while (cursor < contentLength && lastChar != '<') {
+      s.append(lastChar);
+      lastChar = content.charAt(cursor++);
+    }
+    if (lastChar == '<') cursor--;
+    return s.toString().trim();
+  }
+
+  private ParserTag read_tag(String tag) {
+    ParserTag resTag, t;
+    StringBuilder tagName = new StringBuilder();
+    read_spaces();
+
+    if (!read_char('<')) return null;
+    if (tag.isEmpty()) {
+      while (cursor < contentLength && isCharForAttr()) {
+        tagName.append(content.charAt(cursor));
+        cursor++;
+      }
+      if (tagName.length() == 0) {
+        cursor--; // on décrémente le curseur car on a lu un '<' qu'il ne fallait pas
+        return null;
+      }
+    } else {
+      if (!read_string(tag)) error("Cannot find " + tag + " tag.");
+      tagName.append(tag.toLowerCase());
+    }
+    resTag = new ParserTag(tagName.toString());
+
+    read_spaces();
+
     ParserAttribute attr;
     while ((attr = read_attribute()) != null) {
-      svgAttrs.addElement(attr);
+      resTag.addAttribute(attr);
       read_spaces();
     }
-
-    for (ParserAttribute a: svgAttrs) {
-      System.out.println(a);
+    if (read_string("/>")) {
+      resTag.setAutoClose();
+      return resTag;
     }
-    System.out.println("---- end: reading SVG tag");
+    if (!read_char('>')) error("Missing '>' character for " + tagName + " tag.");
+    while ((t = read_tag()) != null) {
+      resTag.addChild(t);
+    }
+    resTag.setContent(read_tagString());
+    if (!read_string("</")) error("Missing end tag for " + tagName + " tag.");
+    read_spaces();
+    if (!read_string(tagName.toString())) error("Missing end tag for " + tagName + " tag.");
+    read_spaces();
+    if (!read_char('>')) error("Missing '>' character for closing " + tagName + " tag.");
+    return resTag;
   }
 
   // getters / setters
@@ -190,6 +242,14 @@ class SVGParser {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  // @TODO: extern this in an other object.
+  public String toString() {
+    StringBuilder r = new StringBuilder("<?xml ");
+    for (ParserAttribute a: xmlTag) r.append(a);
+    r.append("?>\n");
+    return r.toString();
   }
 }
 
