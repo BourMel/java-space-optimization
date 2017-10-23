@@ -16,6 +16,7 @@ class SVGParser {
   private int contentLength;
   private int cursor;
   private char lastChar;
+  private int deep;
 
   private Vector<ParserAttribute> xmlTag;
   private ParserTag svgTag;
@@ -43,7 +44,7 @@ class SVGParser {
     System.out.println(" => cursor = " + cursor);
 
     System.out.println("======= RESULTS: ======");
-    System.out.println(svgTag);
+    System.out.println(this);
   }
 
   private Stream<String> fetchStream() throws IOException {
@@ -170,6 +171,7 @@ class SVGParser {
   }
 
   private void read_svgTag() {
+    deep = 0;
     svgTag = read_tag("svg");
     if (svgTag == null) error("No SVG tag found.");
   }
@@ -218,8 +220,10 @@ class SVGParser {
       resTag.addAttribute(attr);
       read_spaces();
     }
+    resTag.setDeep(deep++);
     if (read_string("/>")) {
       resTag.setAutoClose();
+      deep--;
       return resTag;
     }
     if (!read_char('>')) error("Missing '>' character for " + tagName + " tag.");
@@ -232,6 +236,7 @@ class SVGParser {
     if (!read_string(tagName.toString())) error("Missing end tag for " + tagName + " tag.");
     read_spaces();
     if (!read_char('>')) error("Missing '>' character for closing " + tagName + " tag.");
+    deep--;
     return resTag;
   }
 
@@ -246,9 +251,10 @@ class SVGParser {
 
   // @TODO: extern this in an other object.
   public String toString() {
-    StringBuilder r = new StringBuilder("<?xml ");
+    StringBuilder r = new StringBuilder("<?xml");
     for (ParserAttribute a: xmlTag) r.append(a);
     r.append("?>\n");
+    r.append(svgTag);
     return r.toString();
   }
 }
