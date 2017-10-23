@@ -8,6 +8,8 @@ class ParserTag {
   private String content;
   private int deep = 0;
 
+  private final static String TABULATION = "  ";
+
   public ParserTag(String name) {
     this.name = name;
     attrs = new Vector<ParserAttribute>();
@@ -42,22 +44,22 @@ class ParserTag {
     this.deep = deep;
   }
 
+  // permet d'indenter
+  private String indent() {
+    StringBuilder s = new StringBuilder();
+    for (int i = 0; i < deep; i++) s.append(TABULATION);
+    return s.toString();
+  }
+
   public String toString() {
     StringBuilder r = new StringBuilder();
     if (!name.equals("svg")) r.append("\n");
-    for (int i = 0; i < deep; i++) r.append("  ");
-    r.append("<").append(name);
+    r.append(indent()).append("<").append(name);
     for (ParserAttribute attr: attrs) r.append(attr.toString());
-    if (autoClose) {
-      r.append("/>");
-      return r.toString();
-    }
+    if (autoClose) return r.append("/>").toString();
     r.append(">").append(content);
     for (ParserTag tag: childs) r.append(tag.toString());
-    if (content.isEmpty()) {
-      r.append("\n");
-      for (int i = 0; i < deep; i++) r.append("  ");
-    }
+    if (content.isEmpty()) r.append("\n").append(indent());
     r.append("</").append(name).append(">");
     return r.toString();
   }

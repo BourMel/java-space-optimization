@@ -128,6 +128,22 @@ class SVGParser {
     return true;
   }
 
+  // version insensible à la casse
+  private boolean read_string_insensitive(String str) {
+    if (!isContent()) error("No content!");
+    int initCursor = cursor;
+    int strLen = str.length();
+    if ((cursor + strLen) >= contentLength) return false;
+    for (int i = 0; i < strLen; i++) {
+      if (!read_char(Character.toLowerCase(str.charAt(i)))
+        && !read_char(Character.toUpperCase(str.charAt(i)))) {
+        cursor = initCursor;
+        return false;
+      }
+    }
+    return true;
+  }
+
   private boolean isCharForAttr() {
     char currentChar = content.charAt(cursor);
     return ((currentChar >= 'a' && currentChar <= 'z')
@@ -198,20 +214,17 @@ class SVGParser {
     read_spaces();
 
     if (!read_char('<')) return null;
-    if (tag.isEmpty()) {
-      while (cursor < contentLength && isCharForAttr()) {
-        tagName.append(content.charAt(cursor));
-        cursor++;
-      }
-      if (tagName.length() == 0) {
-        cursor--; // on décrémente le curseur car on a lu un '<' qu'il ne fallait pas
-        return null;
-      }
-    } else {
-      if (!read_string(tag)) error("Cannot find " + tag + " tag.");
-      tagName.append(tag.toLowerCase());
+    while (cursor < contentLength && isCharForAttr()) {
+      tagName.append(content.charAt(cursor++));
     }
-    resTag = new ParserTag(tagName.toString());
+    if (tagName.length() == 0) {
+      cursor--; // on décrémente le curseur car on a lu un '<' qu'il ne fallait pas
+      return null;
+    }
+    if (!tag.isEmpty() && !tag.toLowerCase().equals(tagName.toString().toLowerCase())) {
+      error("Cannot find " + tag + " tag.");
+    }
+    resTag = new ParserTag(tagName.toString().toLowerCase());
 
     read_spaces();
 
@@ -233,9 +246,13 @@ class SVGParser {
     resTag.setContent(read_tagString());
     if (!read_string("</")) error("Missing end tag for " + tagName + " tag.");
     read_spaces();
-    if (!read_string(tagName.toString())) error("Missing end tag for " + tagName + " tag.");
+    if (!read_string_insensitive(tagName.toString())) {
+      error("Missing end tag for " + tagName + " tag.");
+    }
     read_spaces();
-    if (!read_char('>')) error("Missing '>' character for closing " + tagName + " tag.");
+    if (!read_char('>')) {
+      error("Missing '>' character for closing " + tagName + " tag.");
+    }
     deep--;
     return resTag;
   }
