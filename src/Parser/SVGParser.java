@@ -31,20 +31,10 @@ class SVGParser {
 
   // methods
   public void parse() throws IOException {
-    System.out.println("=== STARTED PARSING ===");
     cursor = 0;
     fetchContent();
     parseXMLTag();
-    System.out.println(content);
     read_svgTag();
-    System.out.println("==== ENDED PARSING ====");
-    for (ParserAttribute a: xmlTag) {
-      System.out.println(a);
-    }
-    System.out.println(" => cursor = " + cursor);
-
-    System.out.println("======= RESULTS: ======");
-    System.out.println(this);
   }
 
   private Stream<String> fetchStream() throws IOException {
