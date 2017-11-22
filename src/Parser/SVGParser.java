@@ -230,9 +230,7 @@ class SVGParser {
       return resTag;
     }
     if (!read_char('>')) error("Missing '>' character for " + tagName + " tag.");
-    while ((t = read_tag()) != null) {
-      resTag.addChild(t);
-    }
+    while ((t = read_tag()) != null) resTag.addChild(t);
     resTag.setContent(read_tagString());
     if (!read_string("</")) error("Missing end tag for " + tagName + " tag.");
     read_spaces();
@@ -256,7 +254,6 @@ class SVGParser {
     this.url = url;
   }
 
-  // @TODO: extern this in an other object.
   public String toString() {
     StringBuilder r = new StringBuilder("<?xml");
     for (ParserAttribute a: xmlTag) r.append(a);
