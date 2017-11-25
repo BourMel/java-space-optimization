@@ -6,6 +6,15 @@ class Parser {
   // constructeur
   public Parser(String url) {
     parser = new SVGParser();
+    parse(url);
+  }
+
+  public Parser() {
+    parser = new SVGParser();
+  }
+
+  public void parse(String url) {
+    Core core = Core.getInstance();
     parser.setUrl(url);
     try {
       parser.parse();

@@ -256,9 +256,9 @@ class SVGParser {
 
   public String toString() {
     StringBuilder r = new StringBuilder("<?xml");
-    for (ParserAttribute a: xmlTag) r.append(a);
+    if (xmlTag != null) for (ParserAttribute a: xmlTag) r.append(a);
     r.append("?>\n");
-    r.append(svgTag);
+    if (svgTag != null) r.append(svgTag);
     return r.toString();
   }
 }
