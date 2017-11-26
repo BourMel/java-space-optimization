@@ -141,7 +141,8 @@ class SVGParser {
     return ((currentChar >= 'a' && currentChar <= 'z')
       || (currentChar >= 'A' && currentChar <= 'Z')
       || (currentChar >= '0' && currentChar <= '9')
-      || currentChar == ':' || currentChar == '-');
+      || currentChar == ':' || currentChar == '-'
+      || currentChar == '_');
   }
 
   private boolean isCharForAttrValue(boolean allowSpaces, char separator) {
