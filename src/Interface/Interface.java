@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -115,6 +116,11 @@ public class Interface extends JFrame {
     );
 
     pack();
+  }
+
+  public void paint(Graphics g) {
+    super.paint(g);
+    g.drawString("voir pour afficher le SVG ici", 350, 250);
   }
 
   public void setCurrentURI(String uri) {
