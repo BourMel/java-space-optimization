@@ -10,8 +10,8 @@ public class ChooseFileButton extends JButton {
   public ChooseFileButton() {
     super();
 
-    this.setText("Ouvrir un fichier SVG");
-    this.addActionListener(new ActionListener() {
+    setText("Ouvrir un fichier SVG");
+    addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         chooseFileAction();
       }

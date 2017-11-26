@@ -1,24 +1,22 @@
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
 import javax.swing.WindowConstants;
 
 
 public class Interface extends JFrame {
 
   private RunButton actionBtn;
-  private JScrollPane drawingPane;
+  private DrawingPane drawingPane;
   private ChooseFileButton fileChooserBtn;
   private JScrollPane logPane;
   private JTextPane logText;
@@ -38,7 +36,7 @@ public class Interface extends JFrame {
     uriFileLabel = new JLabel();
     uriFileText = new JTextField();
     actionBtn = new RunButton();
-    drawingPane = new JScrollPane();
+    drawingPane = new DrawingPane();
     logPane = new JScrollPane();
     logText = new JTextPane();
 
@@ -80,47 +78,39 @@ public class Interface extends JFrame {
         .addPreferredGap(ComponentPlacement.RELATED)
         .addComponent(drawingPane,
           GroupLayout.DEFAULT_SIZE,
-          414,
-          Short.MAX_VALUE)
-        .addContainerGap())
+          426,
+          Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(Alignment.LEADING)
-      .addGroup(layout.createSequentialGroup()
+      .addGroup(Alignment.TRAILING, layout.createSequentialGroup()
         .addContainerGap()
-        .addGroup(layout.createParallelGroup(Alignment.LEADING)
-          .addComponent(drawingPane)
-          .addGroup(layout.createSequentialGroup()
-            .addComponent(fileChooserBtn,
-              GroupLayout.PREFERRED_SIZE,
-              50,
-              GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(ComponentPlacement.UNRELATED)
-            .addComponent(uriFileLabel)
-            .addPreferredGap(ComponentPlacement.RELATED)
-            .addComponent(uriFileText,
-              GroupLayout.PREFERRED_SIZE,
-              GroupLayout.DEFAULT_SIZE,
-              GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(ComponentPlacement.RELATED)
-            .addComponent(logPane,
-              GroupLayout.DEFAULT_SIZE,
-              224,
-              Short.MAX_VALUE)
-            .addPreferredGap(ComponentPlacement.RELATED)
-            .addComponent(actionBtn,
-              GroupLayout.PREFERRED_SIZE,
-              60,
-              GroupLayout.PREFERRED_SIZE)))
+        .addComponent(fileChooserBtn,
+          GroupLayout.PREFERRED_SIZE,
+          50,
+          GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(ComponentPlacement.UNRELATED)
+        .addComponent(uriFileLabel)
+        .addPreferredGap(ComponentPlacement.RELATED)
+        .addComponent(uriFileText,
+          GroupLayout.PREFERRED_SIZE,
+          GroupLayout.DEFAULT_SIZE,
+          GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(ComponentPlacement.RELATED)
+        .addComponent(logPane,
+          GroupLayout.DEFAULT_SIZE,
+          224,
+          Short.MAX_VALUE)
+        .addPreferredGap(ComponentPlacement.RELATED)
+        .addComponent(actionBtn,
+          GroupLayout.PREFERRED_SIZE,
+          60,
+          GroupLayout.PREFERRED_SIZE)
         .addContainerGap())
+      .addComponent(drawingPane)
     );
 
     pack();
-  }
-
-  public void paint(Graphics g) {
-    super.paint(g);
-    g.drawString("voir pour afficher le SVG ici", 350, 250);
   }
 
   public void setCurrentURI(String uri) {
