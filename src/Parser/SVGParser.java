@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 class SVGParser {
 
@@ -51,14 +52,15 @@ class SVGParser {
     StringBuilder contentBuilder = new StringBuilder();
     Stream<String> stream = fetchStream();
     stream.map(s -> s.trim())
-          .filter(s -> !s.isEmpty())
-          .forEach(s -> contentBuilder.append(s).append(" "));
+      .filter(s -> !s.isEmpty())
+      .forEach(s -> contentBuilder.append(s).append(" "));
     content = contentBuilder.toString()
-                            .replaceAll("  *", " ")
-                            .replaceAll("<!--(.*?)-->", "")
-                            .replaceAll("  *", " ")
-                            .replaceAll("> <", "><")
-                            .trim();
+      .replaceAll("(?i)" + Pattern.quote("<!DOCTYPE") + "[^>]*>", "")
+      .replaceAll("  *", " ")
+      .replaceAll("<!--(.*?)-->", "")
+      .replaceAll("  *", " ")
+      .replaceAll("> <", "><")
+      .trim();
     contentLength = content.length();
   }
 
