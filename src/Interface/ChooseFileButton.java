@@ -1,28 +1,38 @@
+import java.io.File;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public class ChooseFileButton extends JButton implements MouseListener {
-  private String name;
+public class ChooseFileButton extends JButton {
 
-  public ChooseFileButton(String name) {
-    super(name);
-    this.name = name;
+  public ChooseFileButton() {
+    super();
 
-    this.addMouseListener(this);
+    this.setText("Ouvrir un fichier SVG");
+    this.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
+        chooseFileAction();
+      }
+    });
   }
 
-  public void mouseClicked(MouseEvent event) {
-    ChooseFile importFile = new ChooseFile();
+  public void chooseFileAction() {
+    File choosedFile;
+    String choosedFileName;
+    Core core = Core.getInstance();
+
+    core.debug("Instanciation de la boîte de dialogue");
+
+    JFileChooser importFile = new JFileChooser();
+    importFile.showOpenDialog(null); // affiche
+    choosedFile = importFile.getSelectedFile();
+
+    if (choosedFile != null) {
+      choosedFileName = choosedFile.toString();
+      core.debug("Fichier choisi : " + choosedFileName);
+      core.setSvgUri(choosedFileName);
+    }
   }
-
-  public void mouseEntered(MouseEvent event) {}
-
-  public void mouseExited(MouseEvent event) {}
-
-  public void mousePressed(MouseEvent event) {}
-
-  public void mouseReleased(MouseEvent event) {}
 }

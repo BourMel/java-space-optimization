@@ -1,11 +1,8 @@
-class Main {
+public class Main {
   public static void main (String [] args) {
 
-    // // on teste si le parseur est OK
-    // Parser p = new Parser("./examples/dessin_simple.svg");
-    // System.out.println(p);
+    // pour lancer le tout
+    Core core = Core.getInstance();
 
-    // on lance l'interface
-    Interface window = new Interface();
   }
 }
