@@ -9,9 +9,9 @@ import java.util.stream.Stream;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-class XMLParser {
 
-  // variables
+public class XMLParser {
+
   private String url;
   private String content;
   private int contentLength;
@@ -19,10 +19,10 @@ class XMLParser {
   private char lastChar;
   private int deep;
 
-  private Vector<ParserAttribute> xmlTag;
-  private ParserTag svgTag;
+  private Vector<XMLAttribute> xmlProlog;
+  private XMLTag svgTag; // car la balise prncipale devrait être un SVG
 
-  // constructeur
+  // constructeurs
   public XMLParser() {
   }
 
@@ -30,14 +30,15 @@ class XMLParser {
     this.url = url;
   }
 
-  // methods
-  public void parse() throws IOException {
+  // méthode principale
+  public XMLDocument parse() throws IOException {
     cursor = 0;
     contentLength = 0;
     content = null;
-    fetchContent();
-    parseXMLTag();
-    read_svgTag();
+    fetchContent(); // on récupère le contenu
+    parseXMLProlog(); // on parse le prologue XML
+    read_svgTag(); // on parse tout le contenu
+    return new XMLDocument(xmlProlog, svgTag);
   }
 
   // récupère un Stream du contenu (local ou depuis une URL d'un fichier web)
@@ -68,17 +69,17 @@ class XMLParser {
     contentLength = content.length();
   }
 
-  // parse la balise XML initiale
-  public void parseXMLTag() {
-    xmlTag = new Vector<ParserAttribute>();
-    ParserAttribute attr;
+  // parse le prologue XML
+  public void parseXMLProlog() {
+    xmlProlog = new Vector<XMLAttribute>();
+    XMLAttribute attr;
     if (read_string("<?xml")) {
       read_spaces();
       while ((attr = read_attribute()) != null) {
-        xmlTag.addElement(attr);
+        xmlProlog.addElement(attr);
         read_spaces();
       }
-      if (!read_string("?>")) error("Mauvais prolog XML.");
+      if (!read_string("?>")) error("Mauvais prologue XML.");
     }
   }
 
@@ -162,16 +163,16 @@ class XMLParser {
   }
 
   // permet de lire un attribut
-  private ParserAttribute read_attribute() {
+  private XMLAttribute read_attribute() {
     if (!isContent()) error("Contenu vide !");
-    ParserAttribute attr = null;
+    XMLAttribute attr = null;
     StringBuilder attrName = new StringBuilder();
     while (cursor < contentLength && isCharForAttr()) {
       attrName.append(content.charAt(cursor));
       cursor++;
     }
     if (attrName.length() > 0) {
-      attr = new ParserAttribute(attrName.toString().toLowerCase());
+      attr = new XMLAttribute(attrName.toString().toLowerCase());
       if (read_char('=')) {
         boolean hasQuote = read_char('"') || read_char('\'');
         char separator = lastChar;
@@ -212,13 +213,13 @@ class XMLParser {
   }
 
   // permet de lire une balise quelconque (alias sans argument)
-  private ParserTag read_tag() {
+  private XMLTag read_tag() {
     return read_tag("");
   }
 
   // permet de lire une balise quelconque
-  private ParserTag read_tag(String tag) {
-    ParserTag resTag, t;
+  private XMLTag read_tag(String tag) {
+    XMLTag resTag, t;
     StringBuilder tagName = new StringBuilder();
     read_spaces();
 
@@ -240,11 +241,11 @@ class XMLParser {
     }
 
     // on a donc déjà un nom à notre balise !
-    resTag = new ParserTag(tagName.toString().toLowerCase());
+    resTag = new XMLTag(tagName.toString().toLowerCase());
     read_spaces();
 
     // on récupère les attributs
-    ParserAttribute attr;
+    XMLAttribute attr;
     while ((attr = read_attribute()) != null) {
       resTag.addAttribute(attr);
       read_spaces();
@@ -285,15 +286,6 @@ class XMLParser {
   // permet de définir une URL
   public void setUrl(String url) {
     this.url = url;
-  }
-
-  // retourne le document parsé au format texte
-  public String toString() {
-    StringBuilder r = new StringBuilder("<?xml");
-    if (xmlTag != null) for (ParserAttribute a: xmlTag) r.append(a);
-    r.append("?>\n");
-    if (svgTag != null) r.append(svgTag);
-    return r.toString();
   }
 }
 

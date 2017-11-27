@@ -1,5 +1,6 @@
 import java.io.IOException;
 
+
 class Parser {
   private XMLParser parser;
 
@@ -13,15 +14,16 @@ class Parser {
     parser = new XMLParser();
   }
 
-  public void parse(String url) {
-    Core core = Core.getInstance();
+  public XMLDocument parse(String url) {
+    XMLDocument doc = null;
     parser.setUrl(url);
     try {
-      parser.parse();
+      doc = parser.parse();
     } catch (IOException e) {
       e.printStackTrace();
       System.out.println(" => Le fichier semble inexistant.");
     }
+    return doc;
   }
 
   // on affiche le SVG sous forme de texte dans le cas où

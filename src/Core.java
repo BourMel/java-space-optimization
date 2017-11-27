@@ -10,6 +10,9 @@ class Core {
   private Parser parser;
   private Interface i;
 
+  // @TODO: remove
+  private XMLDocument xmldoc = null;
+
   private Core() {
     // initialisation du parseur
     parser = new Parser();
@@ -34,11 +37,11 @@ class Core {
   }
 
   public void parse(String url) {
-    parser.parse(url);
+    xmldoc = parser.parse(url);
   }
 
   public String getParsedContent() {
-    return parser.toString();
+    return (xmldoc != null) ? xmldoc.toString() : "";
   }
 
   public void startDebug() {

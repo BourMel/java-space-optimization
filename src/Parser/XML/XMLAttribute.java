@@ -1,14 +1,15 @@
-class ParserAttribute {
+public class XMLAttribute {
+
   private String name;
   private String value;
   private char separator = '\0'; // ' or "
 
   // un attribut doit avoir au moins un nom
-  public ParserAttribute(String name) {
+  public XMLAttribute(String name) {
     this.name = name;
   }
 
-  public ParserAttribute(String name, String value) {
+  public XMLAttribute(String name, String value) {
     this.name = name;
     this.value = value;
     if (value.contains("\"")) separator = '\'';
