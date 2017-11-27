@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-class SVGParser {
+class XMLParser {
 
   // variables
   private String url;
@@ -22,32 +22,36 @@ class SVGParser {
   private Vector<ParserAttribute> xmlTag;
   private ParserTag svgTag;
 
-  // constructors
-  public SVGParser() {
+  // constructeur
+  public XMLParser() {
   }
 
-  public SVGParser(String url) {
+  public XMLParser(String url) {
     this.url = url;
   }
 
   // methods
   public void parse() throws IOException {
     cursor = 0;
+    contentLength = 0;
+    content = null;
     fetchContent();
     parseXMLTag();
     read_svgTag();
   }
 
+  // récupère un Stream du contenu (local ou depuis une URL d'un fichier web)
   private Stream<String> fetchStream() throws IOException {
-    if (url.startsWith("http")) {
+    if (url.startsWith("http")) { // s'il s'agit d'une URL
       InputStream is = new URL(url).openConnection().getInputStream();
       BufferedReader reader = new BufferedReader(new InputStreamReader(is));
       return reader.lines();
-    } else {
+    } else { // sinon c'est un fichier classique
       return Files.lines(Paths.get(url));
     }
   }
 
+  // récupère le contenu, le met en une seule ligne, et le nettoie
   private void fetchContent() throws IOException {
     StringBuilder contentBuilder = new StringBuilder();
     Stream<String> stream = fetchStream();
@@ -64,6 +68,7 @@ class SVGParser {
     contentLength = content.length();
   }
 
+  // parse la balise XML initiale
   public void parseXMLTag() {
     xmlTag = new Vector<ParserAttribute>();
     ParserAttribute attr;
@@ -73,31 +78,33 @@ class SVGParser {
         xmlTag.addElement(attr);
         read_spaces();
       }
-      if (!read_string("?>")) error("Bad XML prolog.");
+      if (!read_string("?>")) error("Mauvais prolog XML.");
     }
   }
 
+  // booléen pour dire s'il y a du contenu à parser ou non
   private boolean isContent() {
     return content != null && !content.isEmpty();
   }
 
   private void error(String str) {
-    System.out.println("ERROR: " + str);
+    System.out.println("ERREUR: " + str);
     System.exit(1);
   }
 
   private void error() {
-    error("An error occured!");
+    error("Une erreur est survenue !");
   }
 
   // on incrémente le curseur pour chaque "espace" rencontré
   private void read_spaces() {
-    if (!isContent()) error("No content!");
+    if (!isContent()) error("Contenu vide !");
     while (cursor < contentLength && content.charAt(cursor) == ' ') cursor++;
   }
 
+  // renvoie vrai si on a pu lire le caractère souhaité, faux sinon
   private boolean read_char(char c) {
-    if (!isContent()) error("No content!");
+    if (!isContent()) error("Contenu vide !");
     if (cursor < contentLength && content.charAt(cursor) == c) {
       lastChar = c;
       cursor++;
@@ -106,8 +113,9 @@ class SVGParser {
     return false;
   }
 
+  // renvoie vrai si on a pu lire la chaîne de caractères souhaitée, faux sinon
   private boolean read_string(String str) {
-    if (!isContent()) error("No content!");
+    if (!isContent()) error("Contenu vide !");
     int initCursor = cursor;
     int strLen = str.length();
     if ((cursor + strLen) >= contentLength) return false;
@@ -122,7 +130,7 @@ class SVGParser {
 
   // version insensible à la casse
   private boolean read_string_insensitive(String str) {
-    if (!isContent()) error("No content!");
+    if (!isContent()) error("Contenu vide !");
     int initCursor = cursor;
     int strLen = str.length();
     if ((cursor + strLen) >= contentLength) return false;
@@ -136,6 +144,7 @@ class SVGParser {
     return true;
   }
 
+  // indique si le caractère peut appartenir à un nom d'attribut
   private boolean isCharForAttr() {
     char currentChar = content.charAt(cursor);
     return ((currentChar >= 'a' && currentChar <= 'z')
@@ -145,14 +154,16 @@ class SVGParser {
       || currentChar == '_');
   }
 
+  // indique si le caractère peut appartenir à la valeur d'un attribut
   private boolean isCharForAttrValue(boolean allowSpaces, char separator) {
     char currentChar = content.charAt(cursor);
     if (allowSpaces) return currentChar != separator;
     else return currentChar != ' ';
   }
 
+  // permet de lire un attribut
   private ParserAttribute read_attribute() {
-    if (!isContent()) error("No content!");
+    if (!isContent()) error("Contenu vide !");
     ParserAttribute attr = null;
     StringBuilder attrName = new StringBuilder();
     while (cursor < contentLength && isCharForAttr()) {
@@ -165,12 +176,13 @@ class SVGParser {
         boolean hasQuote = read_char('"') || read_char('\'');
         char separator = lastChar;
         StringBuilder attrValue = new StringBuilder();
-        while (cursor < contentLength && isCharForAttrValue(hasQuote, separator)) {
+        while (cursor < contentLength
+          && isCharForAttrValue(hasQuote, separator)) {
           attrValue.append(content.charAt(cursor));
           cursor++;
         }
         if (hasQuote && !read_char(separator)) {
-          error("Missing '" + separator + "' for one attribute.");
+          error("Séparateur '" + separator + "' manquant pour un attribut.");
         }
         if (hasQuote) attr.setSeparator(separator);
         attr.setValue(attrValue.toString());
@@ -179,16 +191,7 @@ class SVGParser {
     return attr;
   }
 
-  private void read_svgTag() {
-    deep = 0;
-    svgTag = read_tag("svg");
-    if (svgTag == null) error("No SVG tag found.");
-  }
-
-  private ParserTag read_tag() {
-    return read_tag("");
-  }
-
+  // permet de lire une chaîne de caractère entre deux balises
   private String read_tagString() {
     read_spaces();
     lastChar = content.charAt(cursor++);
@@ -201,62 +204,90 @@ class SVGParser {
     return s.toString().trim();
   }
 
+  // permet de lire le tag SVG (tout le fichier SVG est englobé dedans)
+  private void read_svgTag() {
+    deep = 0;
+    svgTag = read_tag("svg");
+    if (svgTag == null) error("Aucune balise SVG trouvée.");
+  }
+
+  // permet de lire une balise quelconque (alias sans argument)
+  private ParserTag read_tag() {
+    return read_tag("");
+  }
+
+  // permet de lire une balise quelconque
   private ParserTag read_tag(String tag) {
     ParserTag resTag, t;
     StringBuilder tagName = new StringBuilder();
     read_spaces();
 
+    // une balise commence toujours par un '<'
     if (!read_char('<')) return null;
     while (cursor < contentLength && isCharForAttr()) {
       tagName.append(content.charAt(cursor++));
     }
+
     if (tagName.length() == 0) {
-      cursor--; // on décrémente le curseur car on a lu un '<' qu'il ne fallait pas
+      cursor--; // décrémente le curseur car on a lu un '<' qu'il ne fallait pas
       return null;
     }
-    if (!tag.isEmpty() && !tag.toLowerCase().equals(tagName.toString().toLowerCase())) {
-      error("Cannot find " + tag + " tag.");
-    }
-    resTag = new ParserTag(tagName.toString().toLowerCase());
 
+    // si on souhaitait s'attendre à un tag précis, mais que ce n'est pas le cas
+    if (!tag.isEmpty()
+      && !tag.toLowerCase().equals(tagName.toString().toLowerCase())) {
+      error("Impossible de trouver la balise '" + tag + "'.");
+    }
+
+    // on a donc déjà un nom à notre balise !
+    resTag = new ParserTag(tagName.toString().toLowerCase());
     read_spaces();
 
+    // on récupère les attributs
     ParserAttribute attr;
     while ((attr = read_attribute()) != null) {
       resTag.addAttribute(attr);
       read_spaces();
     }
-    resTag.setDeep(deep++);
+    resTag.setDeep(deep++); // on entre dans une balise, on augmente le lvl
     if (read_string("/>")) {
       resTag.setAutoClose();
-      deep--;
+      deep--; // si c'était une balise auto-fermante, on le rabaisse à nouveau
       return resTag;
     }
-    if (!read_char('>')) error("Missing '>' character for " + tagName + " tag.");
+    if (!read_char('>')) {
+      error("Caractère '>' manquant pour la balise '" + tagName + "'.");
+    }
+
+    // on lit toutes les balises enfant
     while ((t = read_tag()) != null) resTag.addChild(t);
+
+    // si jamais le contenu de la balise était une chaîne de caratcère..
     resTag.setContent(read_tagString());
-    if (!read_string("</")) error("Missing end tag for " + tagName + " tag.");
+
+    // les petites vérifications de fin
+    if (!read_string("</")) {
+      error("Balise de fermeture manquante pour '" + tagName + "'.");
+    }
     read_spaces();
     if (!read_string_insensitive(tagName.toString())) {
-      error("Missing end tag for " + tagName + " tag.");
+      error("Balise de fin manquante pour '" + tagName + "'.");
     }
     read_spaces();
     if (!read_char('>')) {
-      error("Missing '>' character for closing " + tagName + " tag.");
+      error("Caractère '>' manquant pour la fermeture de '" + tagName + "'.");
     }
-    deep--;
+
+    deep--; // on sort d'une balise, on baisse d'un niveau hiérarchique
     return resTag;
   }
 
-  // getters / setters
-  public String getUrl() {
-    return url;
-  }
-
+  // permet de définir une URL
   public void setUrl(String url) {
     this.url = url;
   }
 
+  // retourne le document parsé au format texte
   public String toString() {
     StringBuilder r = new StringBuilder("<?xml");
     if (xmlTag != null) for (ParserAttribute a: xmlTag) r.append(a);

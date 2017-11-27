@@ -1,16 +1,16 @@
 import java.io.IOException;
 
 class Parser {
-  private SVGParser parser;
+  private XMLParser parser;
 
   // constructeur
   public Parser(String url) {
-    parser = new SVGParser();
+    parser = new XMLParser();
     parse(url);
   }
 
   public Parser() {
-    parser = new SVGParser();
+    parser = new XMLParser();
   }
 
   public void parse(String url) {

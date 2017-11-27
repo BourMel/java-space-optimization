@@ -42,7 +42,7 @@ public class Interface extends JFrame {
 
     setTitle(interfaceTitle);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    getContentPane().setBackground(Color.orange);
+    // getContentPane().setBackground(Color.orange);
     setMinimumSize(new Dimension(interfaceWidth, interfaceHeight));
     setPreferredSize(new Dimension(interfaceWidth, interfaceHeight));
 
