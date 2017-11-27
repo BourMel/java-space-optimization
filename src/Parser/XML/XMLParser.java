@@ -88,13 +88,10 @@ public class XMLParser {
     return content != null && !content.isEmpty();
   }
 
+  // on laisse le "noyau" gérer les erreurs
   private void error(String str) {
-    System.out.println("ERREUR: " + str);
-    System.exit(1);
-  }
-
-  private void error() {
-    error("Une erreur est survenue !");
+    Core core = Core.getInstance();
+    core.error(str);
   }
 
   // on incrémente le curseur pour chaque "espace" rencontré

@@ -10,8 +10,7 @@ class Core {
   private Parser parser;
   private Interface i;
 
-  // @TODO: remove
-  private XMLDocument xmldoc = null;
+  private SVGDocument svg = null;
 
   private Core() {
     // initialisation du parseur
@@ -37,11 +36,11 @@ class Core {
   }
 
   public void parse(String url) {
-    xmldoc = parser.parse(url);
+    svg = parser.parse(url);
   }
 
   public String getParsedContent() {
-    return (xmldoc != null) ? xmldoc.toString() : "";
+    return (svg != null) ? svg.toString() : "";
   }
 
   public void startDebug() {

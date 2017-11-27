@@ -14,16 +14,19 @@ class Parser {
     parser = new XMLParser();
   }
 
-  public XMLDocument parse(String url) {
-    XMLDocument doc = null;
+  public SVGDocument parse(String url) {
+    SVGDocument svg;
+    XMLDocument xml = null;
     parser.setUrl(url);
     try {
-      doc = parser.parse();
+      xml = parser.parse();
     } catch (IOException e) {
       e.printStackTrace();
       System.out.println(" => Le fichier semble inexistant.");
+      System.exit(1);
     }
-    return doc;
+    svg = new SVGDocument(xml);
+    return svg;
   }
 
   // on affiche le SVG sous forme de texte dans le cas où
