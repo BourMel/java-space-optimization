@@ -3,6 +3,5 @@ public class Main {
 
     // pour lancer le tout
     Core core = Core.getInstance();
-
   }
 }
