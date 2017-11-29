@@ -21,9 +21,10 @@ public class RunButton extends JButton {
     core.debug("clic sur 'Go' effectué !");
     String currrentFile = core.getSvgUri();
 
-    if (!currrentFile.isEmpty()) {
-      core.parse(currrentFile);
+    // if (!currrentFile.isEmpty()) {
+      // core.parse(currrentFile);
+      core.parse("./examples/dessin_simple.svg");
       core.debug("Contenu parsé :\n" + core.getParsedContent());
-    }
+    // }
   }
 }

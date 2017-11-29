@@ -32,6 +32,6 @@ class Parser {
   // on affiche le SVG sous forme de texte dans le cas où
   // l'on souhaite le sauvegarder dans un fichier
   public String toString() {
-    return "" + parser;
+    return parser.toString();
   }
 }

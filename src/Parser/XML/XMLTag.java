@@ -57,6 +57,14 @@ public class XMLTag {
     return name;
   }
 
+  public String getLowerName() {
+    return getName().toLowerCase();
+  }
+
+  public Vector<XMLTag> getChilds() {
+    return childs;
+  }
+
   public String toString() {
     StringBuilder r = new StringBuilder();
     if (!name.equals("svg")) r.append("\n");
