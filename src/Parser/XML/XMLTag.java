@@ -53,6 +53,10 @@ public class XMLTag {
     return s.toString();
   }
 
+  public String getName() {
+    return name;
+  }
+
   public String toString() {
     StringBuilder r = new StringBuilder();
     if (!name.equals("svg")) r.append("\n");

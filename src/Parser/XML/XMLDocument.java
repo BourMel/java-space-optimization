@@ -12,6 +12,10 @@ public class XMLDocument {
     this.tag = tag;
   }
 
+  public XMLTag getTag() {
+    return tag;
+  }
+
   // retourne le document parsé au format texte
   public String toString() {
     StringBuilder r = new StringBuilder("<?xml");
