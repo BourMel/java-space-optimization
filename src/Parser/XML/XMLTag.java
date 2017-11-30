@@ -7,7 +7,7 @@ public class XMLTag {
   private Vector<XMLAttribute> attrs;
   private boolean autoClose = false;
   private Vector<XMLTag> childs;
-  private String content;
+  private String content = "";
   private int deep = 0;
 
   private final static String TABULATION = "  ";
@@ -69,11 +69,11 @@ public class XMLTag {
     StringBuilder r = new StringBuilder();
     if (!name.equals("svg")) r.append("\n");
     r.append(indent()).append("<").append(name);
-    for (XMLAttribute attr: attrs) r.append(attr.toString());
+    for (XMLAttribute attr : attrs) r.append(attr.toString());
     if (autoClose) return r.append("/>").toString();
     r.append(">").append(content);
-    for (XMLTag tag: childs) r.append(tag.toString());
-    if (content.isEmpty()) r.append("\n").append(indent());
+    for (XMLTag tag : childs) r.append(tag.toString());
+    if (content.isEmpty() && childs.size() > 0) r.append("\n").append(indent());
     r.append("</").append(name).append(">");
     return r.toString();
   }
