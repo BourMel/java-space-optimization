@@ -5,8 +5,10 @@ public class SVGDocument {
 
   private XMLDocument xml;
   private Core core;
+  private Vector<SVGPathCollection> collections;
 
   public SVGDocument(XMLDocument xml) {
+    collections = new Vector<SVGPathCollection>();
     this.xml = xml;
     core = Core.getInstance();
     parse();
@@ -72,19 +74,39 @@ public class SVGDocument {
         core.debug("on traite une balise path");
         if (tag.getChilds().size() != 0) {
           core.debug("une balise path ne doit pas avoir de fils; on zappe.");
-          continue;
         } else {
-          // récupérer un SVGPathCollection de taille 1
+          collections.add(parsePath(tag));
         }
       } else if (tag.getLowerName().equals("g")) {
         core.debug("on traite une balise g");
         if (tag.getChilds().size() == 0) {
           core.debug("...mais on ne fait rien puisqu'elle est vide");
         } else {
-          // récupérer un SVGPathCollection avec tous les path
+          parseFirstLevel(tag.getChilds());
         }
       }
     }
+  }
+
+  private SVGPathCollection parsePath(XMLTag tag) {
+    SVGPathCollection c = new SVGPathCollection();
+    if (!tag.getLowerName().equals("path")) return c;
+    core.debug("  --on traite un path");
+    if (tag.getChilds().size() != 0) {
+      core.debug(" !! une balise path ne doit pas avoir de fils; on ignore.");
+    }
+
+    return c;
+  }
+
+  private SVGPathCollection parseFirstLevel(Vector<XMLTag> tags) {
+    SVGPathCollection c = new SVGPathCollection();
+    for (XMLTag tag : tags) {
+      if (tag.getLowerName().equals("path")) {
+        c.merge(parsePath(tag));
+      }
+    }
+    return c;
   }
 
   public String toString() {
