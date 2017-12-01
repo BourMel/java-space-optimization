@@ -12,6 +12,12 @@ public class Tag {
   public void SVGUpgrade() {
     SVGPathTag path = new SVGPathTag();
     path.setDeep(inner.getDeep());
+
+    // on ajoute les différents attributs
+    for (Attribute attr : inner.getAttributes()) {
+      path.addAttribute(attr);
+    }
+
     inner = path;
   }
 
@@ -53,6 +59,10 @@ public class Tag {
 
   public Vector<Tag> getChilds() {
     return inner.getChilds();
+  }
+
+  public Vector<Attribute> getAttributes() {
+    return inner.getAttributes();
   }
 
   public String toString() {

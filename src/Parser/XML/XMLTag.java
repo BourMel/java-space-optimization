@@ -69,6 +69,10 @@ public class XMLTag {
     return childs;
   }
 
+  public Vector<Attribute> getAttributes() {
+    return attrs;
+  }
+
   public String toString() {
     StringBuilder r = new StringBuilder();
     if (!name.equals("svg")) r.append("\n");
