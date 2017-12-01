@@ -46,6 +46,10 @@ public class XMLTag {
     this.deep = deep;
   }
 
+  public int getDeep() {
+    return deep;
+  }
+
   // permet d'indenter
   private String indent() {
     StringBuilder s = new StringBuilder();

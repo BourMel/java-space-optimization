@@ -10,7 +10,9 @@ public class Tag {
   }
 
   public void SVGUpgrade() {
-    inner = new SVGPathTag();
+    SVGPathTag path = new SVGPathTag();
+    path.setDeep(inner.getDeep());
+    inner = path;
   }
 
   public void addAttribute(XMLAttribute attr) {
