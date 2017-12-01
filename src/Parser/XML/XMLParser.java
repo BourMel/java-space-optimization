@@ -20,7 +20,7 @@ public class XMLParser {
   private int deep;
 
   private Vector<XMLAttribute> xmlProlog;
-  private XMLTag svgTag; // car la balise prncipale devrait être un SVG
+  private XMLTag firstTag; // balise prncipale
 
   // constructeurs
   public XMLParser() {
@@ -37,8 +37,8 @@ public class XMLParser {
     content = null;
     fetchContent(); // on récupère le contenu
     parseXMLProlog(); // on parse le prologue XML
-    read_svgTag(); // on parse tout le contenu
-    return new XMLDocument(xmlProlog, svgTag);
+    read_firstTag(); // on parse tout le contenu
+    return new XMLDocument(xmlProlog, firstTag);
   }
 
   // récupère un Stream du contenu (local ou depuis une URL d'un fichier web)
@@ -202,20 +202,15 @@ public class XMLParser {
     return s.toString().trim();
   }
 
-  // permet de lire le tag SVG (tout le fichier SVG est englobé dedans)
-  private void read_svgTag() {
+  // permet de lire la première balise où tout se trouve dedans
+  private void read_firstTag() {
     deep = 0;
-    svgTag = read_tag("svg");
-    if (svgTag == null) error("Aucune balise SVG trouvée.");
-  }
-
-  // permet de lire une balise quelconque (alias sans argument)
-  private XMLTag read_tag() {
-    return read_tag("");
+    firstTag = read_tag();
+    if (firstTag == null) error("Aucune balise trouvée.");
   }
 
   // permet de lire une balise quelconque
-  private XMLTag read_tag(String tag) {
+  private XMLTag read_tag() {
     XMLTag resTag, t;
     StringBuilder tagName = new StringBuilder();
     read_spaces();
@@ -229,12 +224,6 @@ public class XMLParser {
     if (tagName.length() == 0) {
       cursor--; // décrémente le curseur car on a lu un '<' qu'il ne fallait pas
       return null;
-    }
-
-    // si on souhaitait s'attendre à un tag précis, mais que ce n'est pas le cas
-    if (!tag.isEmpty()
-      && !tag.toLowerCase().equals(tagName.toString().toLowerCase())) {
-      error("Impossible de trouver la balise '" + tag + "'.");
     }
 
     // on a donc déjà un nom à notre balise !
