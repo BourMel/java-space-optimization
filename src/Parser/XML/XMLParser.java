@@ -20,7 +20,7 @@ public class XMLParser {
   private int deep;
 
   private Vector<XMLAttribute> xmlProlog;
-  private XMLTag firstTag; // balise prncipale
+  private Tag firstTag; // balise prncipale
 
   // constructeurs
   public XMLParser() {
@@ -210,8 +210,8 @@ public class XMLParser {
   }
 
   // permet de lire une balise quelconque
-  private XMLTag read_tag() {
-    XMLTag resTag, t;
+  private Tag read_tag() {
+    Tag resTag, t;
     StringBuilder tagName = new StringBuilder();
     read_spaces();
 
@@ -227,7 +227,7 @@ public class XMLParser {
     }
 
     // on a donc déjà un nom à notre balise !
-    resTag = new XMLTag(tagName.toString().toLowerCase());
+    resTag = new Tag(tagName.toString().toLowerCase());
     read_spaces();
 
     // on récupère les attributs

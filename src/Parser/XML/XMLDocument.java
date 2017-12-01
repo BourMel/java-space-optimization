@@ -4,15 +4,15 @@ import java.util.Vector;
 public class XMLDocument {
 
   private Vector<XMLAttribute> prolog; // le prologue xml
-  private XMLTag tag; // tag principal
+  private Tag tag; // tag principal
 
   // constructeur
-  public XMLDocument(Vector<XMLAttribute> prolog, XMLTag tag) {
+  public XMLDocument(Vector<XMLAttribute> prolog, Tag tag) {
     this.prolog = prolog;
     this.tag = tag;
   }
 
-  public XMLTag getTag() {
+  public Tag getTag() {
     return tag;
   }
 

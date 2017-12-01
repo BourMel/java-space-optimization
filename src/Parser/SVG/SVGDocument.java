@@ -15,9 +15,9 @@ public class SVGDocument {
   }
 
   private void parse() {
-    XMLTag tag = basicChecks();
+    Tag tag = basicChecks();
     core.debug("Le fichier semble OK.");
-    Vector<XMLTag> childs = tag.getChilds();
+    Vector<Tag> childs = tag.getChilds();
 
     // si la balise SVG est vide, on a fini.
     if (childs.size() == 0) {
@@ -28,7 +28,7 @@ public class SVGDocument {
     // si le premier 'g' est un calque principal, on l'ignore
     if (countTag(childs, "path") == 0 && countTag(childs, "g") == 1) {
       core.debug("le fichier SVG est composé d'un calque principal");
-      XMLTag layer = firstTagWithName(childs, "g");
+      Tag layer = firstTagWithName(childs, "g");
       if (layer == null) core.error("une erreur est survenue pour trouver <g>");
       else parseRightLevel(layer.getChilds());
     } else {
@@ -38,8 +38,8 @@ public class SVGDocument {
   }
 
   // effectue les vérifications de base
-  private XMLTag basicChecks() {
-    XMLTag tag;
+  private Tag basicChecks() {
+    Tag tag;
     if (xml == null) core.error("Aucun fichier XML à parser...");
     tag = xml.getTag();
     if (tag == null) core.error("le fichier est vide...");
@@ -50,17 +50,17 @@ public class SVGDocument {
   }
 
   // compte le nombre de fois qu'apparaît une balise dans le même niveau
-  private int countTag(Vector<XMLTag> tags, String name) {
+  private int countTag(Vector<Tag> tags, String name) {
     int count = 0;
-    for (XMLTag tag : tags) {
+    for (Tag tag : tags) {
       if (tag.getLowerName().equals(name)) count++;
     }
     return count;
   }
 
   // retourne le premier tag de ce type trouvé
-  private XMLTag firstTagWithName(Vector<XMLTag> tags, String name) {
-    for (XMLTag tag : tags) {
+  private Tag firstTagWithName(Vector<Tag> tags, String name) {
+    for (Tag tag : tags) {
       if (tag.getLowerName().equals(name)) {
         return tag;
       }
@@ -68,8 +68,8 @@ public class SVGDocument {
     return null;
   }
 
-  private void parseRightLevel(Vector<XMLTag> tags) {
-    for (XMLTag tag : tags) {
+  private void parseRightLevel(Vector<Tag> tags) {
+    for (Tag tag : tags) {
       if (tag.getLowerName().equals("path")) {
         core.debug("on traite une balise path");
         if (tag.getChilds().size() != 0) {
@@ -88,20 +88,27 @@ public class SVGDocument {
     }
   }
 
-  private SVGPathCollection parsePath(XMLTag tag) {
+  private SVGPathCollection parsePath(Tag tag) {
     SVGPathCollection c = new SVGPathCollection();
     if (!tag.getLowerName().equals("path")) return c;
     core.debug("  --on traite un path");
     if (tag.getChilds().size() != 0) {
       core.debug(" !! une balise path ne doit pas avoir de fils; on ignore.");
+      return c;
     }
+    // tag = new SVGPathTag();
+    // System.out.println(tag);
+    // tag.setName("eazeeeae");
+
+    tag.SVGUpgrade();
+
 
     return c;
   }
 
-  private SVGPathCollection parseFirstLevel(Vector<XMLTag> tags) {
+  private SVGPathCollection parseFirstLevel(Vector<Tag> tags) {
     SVGPathCollection c = new SVGPathCollection();
-    for (XMLTag tag : tags) {
+    for (Tag tag : tags) {
       if (tag.getLowerName().equals("path")) {
         c.merge(parsePath(tag));
       }

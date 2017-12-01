@@ -6,7 +6,7 @@ public class XMLTag {
   private String name;
   private Vector<XMLAttribute> attrs;
   private boolean autoClose = false;
-  private Vector<XMLTag> childs;
+  private Vector<Tag> childs;
   private String content = "";
   private int deep = 0;
 
@@ -15,7 +15,7 @@ public class XMLTag {
   public XMLTag(String name) {
     this.name = name;
     attrs = new Vector<XMLAttribute>();
-    childs = new Vector<XMLTag>();
+    childs = new Vector<Tag>();
   }
 
   public void addAttribute(XMLAttribute attr) {
@@ -30,7 +30,7 @@ public class XMLTag {
     addAttribute(a);
   }
 
-  public void addChild(XMLTag tag) {
+  public void addChild(Tag tag) {
     childs.addElement(tag);
   }
 
@@ -61,7 +61,7 @@ public class XMLTag {
     return getName().toLowerCase();
   }
 
-  public Vector<XMLTag> getChilds() {
+  public Vector<Tag> getChilds() {
     return childs;
   }
 
@@ -72,7 +72,7 @@ public class XMLTag {
     for (XMLAttribute attr : attrs) r.append(attr.toString());
     if (autoClose) return r.append("/>").toString();
     r.append(">").append(content);
-    for (XMLTag tag : childs) r.append(tag.toString());
+    for (Tag tag : childs) r.append(tag.toString());
     if (content.isEmpty() && childs.size() > 0) r.append("\n").append(indent());
     r.append("</").append(name).append(">");
     return r.toString();
