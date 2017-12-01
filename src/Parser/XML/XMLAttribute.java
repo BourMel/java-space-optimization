@@ -25,8 +25,16 @@ public class XMLAttribute {
     this.separator = separator;
   }
 
+  public char getSeparator() {
+    return separator;
+  }
+
   public String getName() {
     return name;
+  }
+
+  public String getLowerName() {
+    return getName().toLowerCase();
   }
 
   public String getValue() {

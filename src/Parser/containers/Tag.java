@@ -15,6 +15,9 @@ public class Tag {
 
     // on ajoute les différents attributs
     for (Attribute attr : inner.getAttributes()) {
+      if (attr.getLowerName().equals("d")) {
+        attr.SVGUpgrade();
+      }
       path.addAttribute(attr);
     }
 

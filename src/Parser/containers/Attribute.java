@@ -11,6 +11,14 @@ public class Attribute {
     inner = new XMLAttribute(name, value);
   }
 
+  public void SVGUpgrade() {
+    if (getLowerName().equals("d")) {
+      SVGPath path = new SVGPath(getValue());
+      path.setSeparator(inner.getSeparator());
+      inner = path;
+    }
+  }
+
   public void setValue(String value) {
     inner.setValue(value);
   }
@@ -19,8 +27,16 @@ public class Attribute {
     inner.setSeparator(separator);
   }
 
+  public char getSeparator() {
+    return inner.getSeparator();
+  }
+
   public String getName() {
     return inner.getName();
+  }
+
+  public String getLowerName() {
+    return inner.getLowerName();
   }
 
   public String getValue() {
