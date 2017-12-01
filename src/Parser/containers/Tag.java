@@ -15,15 +15,15 @@ public class Tag {
     inner = path;
   }
 
-  public void addAttribute(XMLAttribute attr) {
+  public void addAttribute(Attribute attr) {
     inner.addAttribute(attr);
   }
 
-  public void addAttribute(Vector<XMLAttribute> a) {
+  public void addAttribute(Vector<Attribute> a) {
     inner.addAttribute(a);
   }
 
-  public void addAttributes(Vector<XMLAttribute> a) {
+  public void addAttributes(Vector<Attribute> a) {
     inner.addAttributes(a);
   }
 

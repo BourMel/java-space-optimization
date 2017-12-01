@@ -4,7 +4,7 @@ import java.util.Vector;
 public class XMLTag {
 
   private String name;
-  private Vector<XMLAttribute> attrs;
+  private Vector<Attribute> attrs;
   private boolean autoClose = false;
   private Vector<Tag> childs;
   private String content = "";
@@ -14,19 +14,19 @@ public class XMLTag {
 
   public XMLTag(String name) {
     this.name = name;
-    attrs = new Vector<XMLAttribute>();
+    attrs = new Vector<Attribute>();
     childs = new Vector<Tag>();
   }
 
-  public void addAttribute(XMLAttribute attr) {
+  public void addAttribute(Attribute attr) {
     attrs.addElement(attr);
   }
 
-  public void addAttribute(Vector<XMLAttribute> a) {
-    for (XMLAttribute attr: a) addAttribute(attr);
+  public void addAttribute(Vector<Attribute> a) {
+    for (Attribute attr: a) addAttribute(attr);
   }
 
-  public void addAttributes(Vector<XMLAttribute> a) {
+  public void addAttributes(Vector<Attribute> a) {
     addAttribute(a);
   }
 
@@ -73,7 +73,7 @@ public class XMLTag {
     StringBuilder r = new StringBuilder();
     if (!name.equals("svg")) r.append("\n");
     r.append(indent()).append("<").append(name);
-    for (XMLAttribute attr : attrs) r.append(attr.toString());
+    for (Attribute attr : attrs) r.append(attr.toString());
     if (autoClose) return r.append("/>").toString();
     r.append(">").append(content);
     for (Tag tag : childs) r.append(tag.toString());

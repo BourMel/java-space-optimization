@@ -19,7 +19,7 @@ public class XMLParser {
   private char lastChar;
   private int deep;
 
-  private Vector<XMLAttribute> xmlProlog;
+  private Vector<Attribute> xmlProlog;
   private Tag firstTag; // balise prncipale
 
   // constructeurs
@@ -71,8 +71,8 @@ public class XMLParser {
 
   // parse le prologue XML
   public void parseXMLProlog() {
-    xmlProlog = new Vector<XMLAttribute>();
-    XMLAttribute attr;
+    xmlProlog = new Vector<Attribute>();
+    Attribute attr;
     if (read_string("<?xml")) {
       read_spaces();
       while ((attr = read_attribute()) != null) {
@@ -160,16 +160,16 @@ public class XMLParser {
   }
 
   // permet de lire un attribut
-  private XMLAttribute read_attribute() {
+  private Attribute read_attribute() {
     if (!isContent()) error("Contenu vide !");
-    XMLAttribute attr = null;
+    Attribute attr = null;
     StringBuilder attrName = new StringBuilder();
     while (cursor < contentLength && isCharForAttr()) {
       attrName.append(content.charAt(cursor));
       cursor++;
     }
     if (attrName.length() > 0) {
-      attr = new XMLAttribute(attrName.toString().toLowerCase());
+      attr = new Attribute(attrName.toString().toLowerCase());
       if (read_char('=')) {
         boolean hasQuote = read_char('"') || read_char('\'');
         char separator = lastChar;
@@ -231,7 +231,7 @@ public class XMLParser {
     read_spaces();
 
     // on récupère les attributs
-    XMLAttribute attr;
+    Attribute attr;
     while ((attr = read_attribute()) != null) {
       resTag.addAttribute(attr);
       read_spaces();
