@@ -32,7 +32,7 @@ public class SVGPath extends XMLAttribute {
   }
 
   public void doRightMove(Path2D path, char action) {
-    Point p1, p2, p3;
+    Point p1, p2, p3, tmp = lastPoint;
     switch(action) {
       case 'm':
         p1 = read_rel_point();
@@ -44,14 +44,17 @@ public class SVGPath extends XMLAttribute {
         break;
       case 'q':
         p1 = read_rel_point();
+        lastPoint = tmp;
         read_spaces();
         p2 = read_rel_point();
         path.quadTo(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         break;
       case 'c':
         p1 = read_rel_point();
+        lastPoint = tmp;
         read_spaces();
         p2 = read_rel_point();
+        lastPoint = tmp;
         read_spaces();
         p3 = read_rel_point();
         path.curveTo(
