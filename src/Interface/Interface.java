@@ -63,7 +63,10 @@ public class Interface extends JFrame {
             GroupLayout.DEFAULT_SIZE,
             GroupLayout.DEFAULT_SIZE,
             Short.MAX_VALUE)
-          .addComponent(uriFileText)
+          .addComponent(uriFileText,
+            GroupLayout.DEFAULT_SIZE,
+            200,
+            200)
           .addComponent(fileChooserBtn,
             Alignment.LEADING,
             GroupLayout.DEFAULT_SIZE,
