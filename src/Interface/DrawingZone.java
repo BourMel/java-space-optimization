@@ -10,17 +10,20 @@ import java.awt.geom.Path2D;
 import java.awt.BasicStroke;
 import java.awt.RenderingHints;
 
+import java.util.Vector;
+
 
 public class DrawingZone extends JPanel {
 
   private static DrawingZone instance;
   private JPanel drawingZone;
   private SVGDocument svg;
+  private Vector<SVGPathCollection> collections;
 
   private DrawingZone() {
     super();
     setBackground(Color.white);
-    resizeZone(800, 600);
+    resizeZone(8000, 6000);
   }
 
   public static DrawingZone getInstance() {
@@ -49,31 +52,16 @@ public class DrawingZone extends JPanel {
       RenderingHints.VALUE_ANTIALIAS_ON
     );
 
-    Path2D path = new Path2D.Double();
-
-    boolean isFirst = true;
-    for (int i = 0; i < Math.round(Math.random() * 200) + 1; i++) {
-      double x = Math.random() * 800;
-      double y = Math.random() * 800;
-
-      if (isFirst) {
-        path.moveTo(x, y);
-        isFirst = false;
-      } else {
-        path.lineTo(x, y);
-      }
-    }
-
-    path.closePath();
-
-    gg.draw(path);
-
-    System.out.println("-------------------------------------------");
     Core core = Core.getInstance();
     SVGDocument svgCore = core.getSVG();
-    if (svgCore != svg) {
+    if (svgCore != null) {
       svg = svgCore;
-      System.out.println(svg.toLightString());
+      collections = svg.getCollections();
+      for (SVGPathCollection c : collections) {
+        for (SVGPath p : c.getPaths()) {
+          gg.draw(p.getPath());
+        }
+      }
     }
   }
 

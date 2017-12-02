@@ -18,13 +18,14 @@ public class RunButton extends JButton {
 
   public void runAction() {
     Core core = Core.getInstance();
+    DrawingZone d = DrawingZone.getInstance();
     core.debug("clic sur 'Go' effectué !");
     String currrentFile = core.getSvgUri();
 
-    // if (!currrentFile.isEmpty()) {
-      // core.parse(currrentFile);
-      core.parse("./examples/dessin_simple.svg");
+    if (!currrentFile.isEmpty()) {
+      core.parse(currrentFile);
+      d.repaint();
       core.debug("Contenu parsé :\n" + core.getParsedContent());
-    // }
+    }
   }
 }

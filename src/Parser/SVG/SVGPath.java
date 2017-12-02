@@ -1,6 +1,8 @@
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 
+import java.awt.geom.AffineTransform;
+
 
 public class SVGPath extends XMLAttribute {
 
@@ -20,6 +22,13 @@ public class SVGPath extends XMLAttribute {
     cursor = 0;
     lastDouble = 0;
     parse();
+
+    AffineTransform at = new AffineTransform();
+    at.translate(0,2490.9448);
+    at.scale(.2, .2);
+    if (path != null) {
+      path.transform(at);
+    }
   }
 
   public void doRightMove(Path2D path, char action) {
@@ -104,29 +113,14 @@ public class SVGPath extends XMLAttribute {
         lastAction = tmpAction;
       } else if (currentChar == '-'
         || (currentChar >= '0' && currentChar <= '9')) {
+        if (lastAction == 'm') lastAction = 'l';
+        else if (lastAction == 'M') lastAction = 'L';
         doRightMove(path, lastAction);
       } else {
         continueToParse = false;
       }
-      System.out.println(cursor);
-
       read_spaces();
     }
-
-    // boolean isFirst = true;
-    // for (int i = 0; i < Math.round(Math.random() * 200); i++) {
-    //   double x = Math.random() * 800;
-    //   double y = Math.random() * 800;
-
-    //   if (isFirst) {
-    //     path.moveTo(x, y);
-    //     isFirst = false;
-    //   } else {
-    //     path.lineTo(x, y);
-    //   }
-    // }
-
-    // path.closePath();
   }
 
   // booléen pour dire s'il y a du contenu à parser ou non
@@ -143,7 +137,7 @@ public class SVGPath extends XMLAttribute {
   // on incrémente le curseur pour chaque "espace" rencontré
   private void read_spaces() {
     if (!isContent()) error("Contenu vide !");
-    while (cursor < contentLength && content.charAt(cursor) == ' ') cursor++;
+    while (read_char(' '));
   }
 
   // renvoie vrai si on a pu lire le caractère souhaité, faux sinon
@@ -199,7 +193,9 @@ public class SVGPath extends XMLAttribute {
     if (!read_double()) error("Un x est attendu (pos=" + cursor + ")");
     x = lastDouble;
     read_spaces();
-    if (!read_char(',')) error("Une virgule est attendue (pos=" + cursor + ")");
+    if (!read_char(',') && lastChar != ' ') {
+      error("Une virgule est attendue (pos=" + cursor + ")");
+    }
     read_spaces();
     if (!read_double()) error("Un y est attendu (pos=" + cursor + ")");
     y = lastDouble;
@@ -227,7 +223,7 @@ public class SVGPath extends XMLAttribute {
       || read_char_insensitive('z');
   }
 
-
+//// NON IMPLEMENTÉ :
 // H = horizontal lineto
 // V = vertical lineto
 // S = smooth curveto
@@ -261,5 +257,9 @@ public class SVGPath extends XMLAttribute {
 
     }
     return str.toString().trim();
+  }
+
+  public Path2D getPath() {
+    return path;
   }
 }

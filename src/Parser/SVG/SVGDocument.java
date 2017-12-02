@@ -128,4 +128,8 @@ public class SVGDocument {
     return str.append("</svg>").toString();
   }
 
+  public Vector<SVGPathCollection> getCollections() {
+    return collections;
+  }
+
 }
