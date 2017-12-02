@@ -36,4 +36,15 @@ public class SVGPathCollection {
     }
   }
 
+  public String toString() {
+    StringBuilder r = new StringBuilder();
+    if (paths.size() == 0) return r.toString();
+    r.append("  <g>\n");
+    for (SVGPath path : paths) {
+      r.append("    <path").append(path).append("/>\n");
+    }
+    r.append("  </g>\n");
+    return r.toString();
+  }
+
 }

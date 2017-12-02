@@ -30,6 +30,20 @@ public class XMLTag {
     addAttribute(a);
   }
 
+  public boolean hasAttribute(String name) {
+    for (Attribute attr : attrs) {
+      if (attr.getLowerName().equals(name)) return true;
+    }
+    return false;
+  }
+
+  public Attribute getAttribute(String name) {
+    for (Attribute attr: attrs) {
+      if (attr.getLowerName().equals(name)) return attr;
+    }
+    return null;
+  }
+
   public void addChild(Tag tag) {
     childs.addElement(tag);
   }

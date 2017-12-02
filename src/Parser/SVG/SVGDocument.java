@@ -82,7 +82,7 @@ public class SVGDocument {
         if (tag.getChilds().size() == 0) {
           core.debug("...mais on ne fait rien puisqu'elle est vide");
         } else {
-          parseFirstLevel(tag.getChilds());
+          collections.add(parseFirstLevel(tag.getChilds()));
         }
       }
     }
@@ -96,13 +96,14 @@ public class SVGDocument {
       core.debug(" !! une balise path ne doit pas avoir de fils; on ignore.");
       return c;
     }
-    // tag = new SVGPathTag();
-    // System.out.println(tag);
-    // tag.setName("eazeeeae");
 
+    if (!tag.hasAttribute("d")) {
+      core.debug(" !! pas d'attribut 'd' sur ce path, on ignore.");
+      return c;
+    }
     tag.SVGUpgrade();
-
-
+    Attribute attrD = tag.getAttribute("d");
+    if (attrD != null) c.addPath((SVGPath) attrD.getInner());
     return c;
   }
 
@@ -118,6 +119,13 @@ public class SVGDocument {
 
   public String toString() {
     return xml.toString();
+  }
+
+  // version minimaliste du SVG
+  public String toLightString() {
+    StringBuilder str = new StringBuilder("<svg>\n");
+    for (SVGPathCollection c : collections) str.append(c);
+    return str.append("</svg>").toString();
   }
 
 }

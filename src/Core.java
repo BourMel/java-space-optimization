@@ -43,6 +43,10 @@ class Core {
     return (svg != null) ? svg.toString() : "";
   }
 
+  public SVGDocument getSVG() {
+    return svg;
+  }
+
   public void startDebug() {
     printDebug = true;
   }

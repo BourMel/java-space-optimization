@@ -42,7 +42,9 @@ public class XMLAttribute {
   }
 
   public String toString() {
-    if (value.isEmpty()) return " " + name;
-    return " " + name + "=" + separator + value + separator;
+    StringBuilder str = new StringBuilder(" ");
+    if (value.isEmpty()) return str.append(name).toString();
+    return str.append(getName()).append("=").append(getSeparator())
+      .append(getValue()).append(getSeparator()).toString();
   }
 }

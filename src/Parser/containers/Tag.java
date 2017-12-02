@@ -36,6 +36,14 @@ public class Tag {
     inner.addAttributes(a);
   }
 
+  public boolean hasAttribute(String name) {
+    return inner.hasAttribute(name);
+  }
+
+  public Attribute getAttribute(String name) {
+    return inner.getAttribute(name);
+  }
+
   public void addChild(Tag tag) {
     inner.addChild(tag);
   }

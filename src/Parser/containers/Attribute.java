@@ -19,6 +19,10 @@ public class Attribute {
     }
   }
 
+  public XMLAttribute getInner() {
+    return inner;
+  }
+
   public void setValue(String value) {
     inner.setValue(value);
   }

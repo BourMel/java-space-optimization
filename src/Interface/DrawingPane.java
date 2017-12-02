@@ -12,7 +12,7 @@ public class DrawingPane extends JScrollPane {
   public DrawingPane() {
     super();
 
-    drawingZone = new DrawingZone();
+    drawingZone = DrawingZone.getInstance();
     setViewportBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
     GroupLayout drawingZoneLayout = new GroupLayout(drawingZone);
