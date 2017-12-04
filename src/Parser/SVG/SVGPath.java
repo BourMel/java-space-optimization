@@ -24,7 +24,7 @@ public class SVGPath extends XMLAttribute {
     parse();
 
     AffineTransform at = new AffineTransform();
-    at.translate(0,2490.9448);
+    at.translate(0,2490.9448*.2);
     at.scale(.2, .2);
     if (path != null) {
       path.transform(at);
@@ -45,17 +45,17 @@ public class SVGPath extends XMLAttribute {
       case 'q':
         p1 = read_rel_point();
         lastPoint = tmp;
-        read_spaces();
+        read_separators();
         p2 = read_rel_point();
         path.quadTo(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         break;
       case 'c':
         p1 = read_rel_point();
         lastPoint = tmp;
-        read_spaces();
+        read_separators();
         p2 = read_rel_point();
         lastPoint = tmp;
-        read_spaces();
+        read_separators();
         p3 = read_rel_point();
         path.curveTo(
           p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY()
@@ -74,15 +74,15 @@ public class SVGPath extends XMLAttribute {
         break;
       case 'Q':
         p1 = read_point();
-        read_spaces();
+        read_separators();
         p2 = read_point();
         path.quadTo(p1.getX(), p1.getY(), p2.getX(), p2.getY());
         break;
       case 'C':
         p1 = read_point();
-        read_spaces();
+        read_separators();
         p2 = read_point();
-        read_spaces();
+        read_separators();
         p3 = read_point();
         path.curveTo(
           p1.getX(), p1.getY(), p2.getX(), p2.getY(), p3.getX(), p3.getY()
@@ -143,6 +143,13 @@ public class SVGPath extends XMLAttribute {
     while (read_char(' '));
   }
 
+
+  private void read_separators() {
+    read_spaces();
+    read_char(',');
+    read_spaces();
+  }
+
   // renvoie vrai si on a pu lire le caractère souhaité, faux sinon
   private boolean read_char(char c) {
     if (!isContent()) error("Contenu vide !");
@@ -197,7 +204,10 @@ public class SVGPath extends XMLAttribute {
     x = lastDouble;
     read_spaces();
     if (!read_char(',') && lastChar != ' ') {
-      error("Une virgule est attendue (pos=" + cursor + ")");
+      // cas particulier des svg optimisés, sans virgule s'il y a un nb négatif
+      if (content.charAt(cursor) != '-') {
+        error("Une virgule est attendue (pos=" + cursor + ")");
+      }
     }
     read_spaces();
     if (!read_double()) error("Un y est attendu (pos=" + cursor + ")");

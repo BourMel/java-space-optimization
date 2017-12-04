@@ -60,7 +60,7 @@ public class XMLParser {
       .filter(s -> !s.isEmpty())
       .forEach(s -> contentBuilder.append(s).append(" "));
     content = contentBuilder.toString()
-      .replaceAll("(?i)" + Pattern.quote("<!DOCTYPE") + "[^>]*>", "")
+      .replaceAll("(?i)" + Pattern.quote("<!") + "[^>]*>", "")
       .replaceAll("  *", " ")
       .replaceAll("<!--(.*?)-->", "")
       .replaceAll("  *", " ")
