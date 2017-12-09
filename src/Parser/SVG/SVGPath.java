@@ -22,13 +22,6 @@ public class SVGPath extends XMLAttribute {
     cursor = 0;
     lastDouble = 0;
     parse();
-
-    AffineTransform at = new AffineTransform();
-    at.translate(0,2490.9448*.2);
-    at.scale(.2, .2);
-    if (path != null) {
-      path.transform(at);
-    }
   }
 
   public void doRightMove(Path2D path, char action) {
@@ -274,5 +267,35 @@ public class SVGPath extends XMLAttribute {
 
   public Path2D getPath() {
     return path;
+  }
+
+  /**
+   *  Déplacement gauche-droite du path
+   *  @param double décalage de x
+   */
+  public void translateX(double value) {
+    AffineTransform right = new AffineTransform();
+    right.translate(value, 0);
+    if (path != null) path.transform(right);
+  }
+
+  /**
+   * Déplacement haut-bas du path
+   * @param double décalage de y
+   */
+  public void translateY(double value) {
+    AffineTransform bottom = new AffineTransform();
+    bottom.translate(0, value);
+    if (path != null) path.transform(bottom);
+  }
+
+  /**
+   * Mise à l'échelle du path (proportionelle)
+   * @param double échelle
+   */
+  public void scale(double value) {
+    AffineTransform size = new AffineTransform();
+    size.scale(value, value);
+    if (path != null) path.transform(size);
   }
 }

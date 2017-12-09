@@ -12,6 +12,11 @@ public class SVGDocument {
     this.xml = xml;
     core = Core.getInstance();
     parse();
+
+    for (SVGPathCollection collection : collections) {
+      collection.translate(0, 2490.9448*.2);
+      collection.scale(0.2);
+    }
   }
 
   private void parse() {
