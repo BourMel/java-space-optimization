@@ -145,13 +145,13 @@ public class Interface extends JFrame {
           224,
           Short.MAX_VALUE)
         .addPreferredGap(ComponentPlacement.RELATED)
+        .addComponent(zoomLabel)
+        .addComponent(zoom)
         .addComponent(actionBtn,
           GroupLayout.PREFERRED_SIZE,
           60,
           GroupLayout.PREFERRED_SIZE)
         .addContainerGap()
-        .addComponent(zoomLabel)
-        .addComponent(zoom)
         .addComponent(topLabel)
         .addComponent(top)
         .addComponent(leftLabel)

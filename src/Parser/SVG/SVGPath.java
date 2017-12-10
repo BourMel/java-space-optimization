@@ -14,14 +14,19 @@ public class SVGPath extends XMLAttribute {
   private Path2D path;
   private Point lastPoint;
 
+  private Core core;
+
   public SVGPath(String value) {
     super("d");
+    core = Core.getInstance();
     setValue("upgraded");
     content = value.trim();
     contentLength = content.length();
     cursor = 0;
     lastDouble = 0;
     parse();
+    scale(core.getZoom());
+    scale(core.getZoom());
   }
 
   public void doRightMove(Path2D path, char action) {
@@ -269,25 +274,25 @@ public class SVGPath extends XMLAttribute {
     return path;
   }
 
-  /**
-   *  Déplacement gauche-droite du path
-   *  @param double décalage de x
-   */
-  public void translateX(double value) {
-    AffineTransform right = new AffineTransform();
-    right.translate(value, 0);
-    if (path != null) path.transform(right);
-  }
+  // /**
+  //  *  Déplacement gauche-droite du path
+  //  *  @param double décalage de x
+  //  */
+  // public void translateX(double value) {
+  //   AffineTransform right = new AffineTransform();
+  //   right.translate(value, 0);
+  //   if (path != null) path.transform(right);
+  // }
 
-  /**
-   * Déplacement haut-bas du path
-   * @param double décalage de y
-   */
-  public void translateY(double value) {
-    AffineTransform bottom = new AffineTransform();
-    bottom.translate(0, value);
-    if (path != null) path.transform(bottom);
-  }
+  // /**
+  //  * Déplacement haut-bas du path
+  //  * @param double décalage de y
+  //  */
+  // public void translateY(double value) {
+  //   AffineTransform bottom = new AffineTransform();
+  //   bottom.translate(0, value);
+  //   if (path != null) path.transform(bottom);
+  // }
 
   /**
    * Mise à l'échelle du path (proportionelle)

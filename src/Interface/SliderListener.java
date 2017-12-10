@@ -25,7 +25,7 @@ public class SliderListener implements ChangeListener {
         if (zoom < 1) zoom = 1;
       }
       core.debug("zoom=" + zoom);
-      // core.changeZoom(zoom);
+      core.setZoom(zoom);
     }
   }
 }

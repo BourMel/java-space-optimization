@@ -10,6 +10,8 @@ import java.awt.geom.Path2D;
 import java.awt.BasicStroke;
 import java.awt.RenderingHints;
 
+import java.awt.geom.AffineTransform;
+
 import java.util.Vector;
 
 
@@ -19,9 +21,11 @@ public class DrawingZone extends JPanel {
   private JPanel drawingZone;
   private SVGDocument svg;
   private Vector<SVGPathCollection> collections;
+  private Core core;
 
   private DrawingZone() {
     super();
+    core = Core.getInstance();
     setBackground(Color.white);
     resizeZone(8000, 6000);
   }
@@ -52,17 +56,22 @@ public class DrawingZone extends JPanel {
       RenderingHints.VALUE_ANTIALIAS_ON
     );
 
-    Core core = Core.getInstance();
-    SVGDocument svgCore = core.getSVG();
-    if (svgCore != null) {
-      svg = svgCore;
+    // AffineTransform at = new AffineTransform();
+    // at.scale(.2, .2);
+
+    SVGDocument svg = core.getSVG();
+    if (svg != null) {
       collections = svg.getCollections();
       for (SVGPathCollection c : collections) {
         for (SVGPath p : c.getPaths()) {
-          gg.draw(p.getPath());
+          Path2D path = p.getPath();
+          // AffineTransform at = path.getTransform();
+          // path.transform(at);
+          gg.draw(path);
         }
       }
     }
+
   }
 
   public void resizeZone(int x, int y) {

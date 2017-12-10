@@ -26,7 +26,7 @@ public class DrawingPane extends JScrollPane {
       .addGap(0, 423, Short.MAX_VALUE)
     );
 
-    // getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
+    getViewport().setScrollMode(JViewport.SIMPLE_SCROLL_MODE);
     setViewportView(drawingZone);
   }
 }

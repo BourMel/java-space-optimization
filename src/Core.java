@@ -9,6 +9,7 @@ class Core {
   private boolean printDebug = true;
   private Parser parser;
   private Interface i;
+  private double zoom = 1; // zoom level
 
   private SVGDocument svg = null;
 
@@ -88,6 +89,14 @@ class Core {
       | UnsupportedLookAndFeelException ex) {
       error("Impossible de définir un look pour l'UI. Arrêt.");
     }
+  }
+
+  public void setZoom(double zoom) {
+    this.zoom = zoom;
+  }
+
+  public double getZoom() {
+    return zoom;
   }
 
   // //actualiser l'affichage
