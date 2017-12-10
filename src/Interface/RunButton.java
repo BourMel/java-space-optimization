@@ -20,10 +20,10 @@ public class RunButton extends JButton {
     Core core = Core.getInstance();
     DrawingZone d = DrawingZone.getInstance();
     core.debug("clic sur 'Go' effectué !");
-    String currrentFile = core.getSvgUri();
+    String currentFile = core.getSvgUri();
 
-    if (!currrentFile.isEmpty()) {
-      core.parse(currrentFile);
+    if (!currentFile.isEmpty()) {
+      core.parse(currentFile);
       d.repaint();
       core.debug("Contenu parsé :\n" + core.getParsedContent());
     }

@@ -12,11 +12,6 @@ public class SVGDocument {
     this.xml = xml;
     core = Core.getInstance();
     parse();
-
-    for (SVGPathCollection collection : collections) {
-      collection.translate(0, 2490.9448*.2);
-      collection.scale(0.2);
-    }
   }
 
   private void parse() {
@@ -135,6 +130,19 @@ public class SVGDocument {
 
   public Vector<SVGPathCollection> getCollections() {
     return collections;
+  }
+
+  public void translate(double transformX, double transformY) {
+    for (SVGPathCollection collection : collections) {
+      collection.translate(transformX, transformY);
+      // collection.translate(0, 2490.9448*.2);
+    }
+  }
+
+  public void scale(double size) {
+    for (SVGPathCollection collection : collections) {
+      collection.scale(size);
+    }
   }
 
 }

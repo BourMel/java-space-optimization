@@ -3,6 +3,8 @@ import java.io.IOException;
 
 class Parser {
   private XMLParser parser;
+  private XMLDocument xml = null;
+  private SVGDocument svg;
 
   // constructeur
   public Parser(String url) {
@@ -15,8 +17,6 @@ class Parser {
   }
 
   public SVGDocument parse(String url) {
-    SVGDocument svg;
-    XMLDocument xml = null;
     parser.setUrl(url);
     try {
       xml = parser.parse();
@@ -33,5 +33,11 @@ class Parser {
   // l'on souhaite le sauvegarder dans un fichier
   public String toString() {
     return parser.toString();
+  }
+
+  public SVGDocument scale(int zoom) {
+    svg = new SVGDocument(xml);
+    svg.scale(zoom);
+    return svg;
   }
 }

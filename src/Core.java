@@ -89,4 +89,17 @@ class Core {
       error("Impossible de définir un look pour l'UI. Arrêt.");
     }
   }
+
+  //actualiser l'affichage
+  public void display() {
+    // DrawingZone d = DrawingZone.getInstance();
+    // d.repaint();
+    // d.validate();
+  }
+
+  public void changeZoom(int level) {
+    svg.scale(level);
+    //appeler l'affichage
+    display();
+  }
 }
