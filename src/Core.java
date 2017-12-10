@@ -92,6 +92,7 @@ class Core {
   }
 
   public void setZoom(double zoom) {
+    i.changeZoom(zoom);
     this.zoom = zoom;
   }
 

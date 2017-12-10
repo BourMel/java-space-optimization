@@ -43,6 +43,12 @@ public class Interface extends JFrame {
     initComponents();
   }
 
+  public void changeZoom(double zoom) {
+    if (zoomLabel != null) {
+      zoomLabel.setText(ZOOM_LABEL + " (" + zoom + "x)");
+    }
+  }
+
   private void initComponents() {
     fileChooserBtn = new ChooseFileButton();
     uriFileLabel = new JLabel();
@@ -62,7 +68,6 @@ public class Interface extends JFrame {
 
     setTitle(INTERFACE_TITLE);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-    // getContentPane().setBackground(Color.orange);
     setMinimumSize(new Dimension(INTERFACE_WIDTH, INTERFACE_HEIGHT));
     setPreferredSize(new Dimension(INTERFACE_WIDTH, INTERFACE_HEIGHT));
 
