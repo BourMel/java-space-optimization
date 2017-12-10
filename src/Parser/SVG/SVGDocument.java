@@ -132,17 +132,17 @@ public class SVGDocument {
     return collections;
   }
 
-  public void translate(double transformX, double transformY) {
-    for (SVGPathCollection collection : collections) {
-      collection.translate(transformX, transformY);
-      // collection.translate(0, 2490.9448*.2);
-    }
-  }
+  // public void translate(double transformX, double transformY) {
+  //   for (SVGPathCollection collection : collections) {
+  //     collection.translate(transformX, transformY);
+  //     // collection.translate(0, 2490.9448*.2);
+  //   }
+  // }
 
-  public void scale(double size) {
-    for (SVGPathCollection collection : collections) {
-      collection.scale(size);
-    }
-  }
+  // public void scale(double size) {
+  //   for (SVGPathCollection collection : collections) {
+  //     collection.scale(size);
+  //   }
+  // }
 
 }

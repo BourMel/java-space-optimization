@@ -90,16 +90,16 @@ class Core {
     }
   }
 
-  //actualiser l'affichage
-  public void display() {
-    // DrawingZone d = DrawingZone.getInstance();
-    // d.repaint();
-    // d.validate();
-  }
+  // //actualiser l'affichage
+  // public void display() {
+  //   DrawingZone d = DrawingZone.getInstance();
+  //   d.repaint();
+  //   // d.validate();
+  // }
 
-  public void changeZoom(int level) {
-    svg.scale(level);
-    //appeler l'affichage
-    display();
-  }
+  // public void changeZoom(int level) {
+  //   svg.scale(level);
+  //   //appeler l'affichage
+  //   display();
+  // }
 }

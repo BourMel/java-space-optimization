@@ -1,4 +1,5 @@
-import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.JSlider;
 
 
@@ -11,11 +12,20 @@ public class SliderListener implements ChangeListener {
   }
 
   public void stateChanged(ChangeEvent e) {
-      JSlider source = (JSlider)e.getSource();
+    JSlider source = (JSlider) e.getSource();
 
-      if (source.getValueIsAdjusting()) {
-        int zoom = (int)source.getValue();
-        core.changeZoom(zoom);
+    if (source.getValueIsAdjusting()) {
+      double value = (double) source.getValue();
+      double zoom = 1;
+      if (value < 0) {
+        zoom = (value + 100) / 100;
+        if (zoom < 0.01) zoom = 0.01;
+      } else if (value > 0) {
+        zoom = value / 10;
+        if (zoom < 1) zoom = 1;
       }
+      core.debug("zoom=" + zoom);
+      // core.changeZoom(zoom);
+    }
   }
 }

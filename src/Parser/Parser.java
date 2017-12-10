@@ -35,9 +35,9 @@ class Parser {
     return parser.toString();
   }
 
-  public SVGDocument scale(int zoom) {
-    svg = new SVGDocument(xml);
-    svg.scale(zoom);
-    return svg;
-  }
+  // public SVGDocument scale(int zoom) {
+  //   svg = new SVGDocument(xml);
+  //   svg.scale(zoom);
+  //   return svg;
+  // }
 }
