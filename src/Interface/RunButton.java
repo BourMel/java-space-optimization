@@ -5,6 +5,8 @@ import javax.swing.JButton;
 
 public class RunButton extends JButton {
 
+  private boolean started = false;
+
   public RunButton() {
     super();
 
@@ -18,14 +20,21 @@ public class RunButton extends JButton {
 
   public void runAction() {
     Core core = Core.getInstance();
-    DrawingZone d = DrawingZone.getInstance();
-    core.debug("clic sur 'Go' effectué !");
-    String currentFile = core.getSvgUri();
+    core.debug("clic sur le bouton effectué !");
+    if (!started) {
+      DrawingZone d = DrawingZone.getInstance();
+      String currentFile = core.getSvgUri();
 
-    if (!currentFile.isEmpty()) {
-      core.parse(currentFile);
-      d.repaint();
-      core.debug("Contenu parsé :\n" + core.getParsedContent());
+      if (!currentFile.isEmpty()) {
+        started = true;
+        core.parse(currentFile);
+        d.repaint();
+        core.disableComponents();
+        core.debug("Contenu parsé :\n" + core.getParsedContent());
+      }
+    } else {
+      core.enableComponents();
+      started = false;
     }
   }
 }

@@ -100,6 +100,14 @@ class Core {
     return zoom;
   }
 
+  public void disableComponents() {
+    i.disableComponents();
+  }
+
+  public void enableComponents() {
+    i.enableComponents();
+  }
+
   // //actualiser l'affichage
   // public void display() {
   //   DrawingZone d = DrawingZone.getInstance();

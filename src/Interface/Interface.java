@@ -175,4 +175,18 @@ public class Interface extends JFrame {
     return uriFileText.getText();
   }
 
+  public void disableComponents() {
+    fileChooserBtn.setEnabled(false);
+    uriFileText.setEnabled(false);
+    zoom.setEnabled(false);
+    actionBtn.setText(">> Recommencer <<");
+  }
+
+  public void enableComponents() {
+    fileChooserBtn.setEnabled(true);
+    uriFileText.setEnabled(true);
+    zoom.setEnabled(true);
+    actionBtn.setText(">> GO <<");
+  }
+
 }
