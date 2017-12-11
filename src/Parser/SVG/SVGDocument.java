@@ -29,12 +29,61 @@ public class SVGDocument {
     if (countTag(childs, "path") == 0 && countTag(childs, "g") == 1) {
       core.debug("le fichier SVG est composé d'un calque principal");
       Tag layer = firstTagWithName(childs, "g");
+      Point translatePoint = transformTransform(layer);
+core.debug(translatePoint.toString());
       if (layer == null) core.error("une erreur est survenue pour trouver <g>");
       else parseRightLevel(layer.getChilds());
     } else {
       core.debug("le fichier SVG n'est pas composé d'un calque principal");
       parseRightLevel(childs);
     }
+  }
+
+  private Point transformTransform(Tag tag) {
+    double x = 0, y = 0;
+    StringBuilder newAttr = new StringBuilder();
+    Attribute attrT = tag.getAttribute("transform");
+    if (attrT == null) return new Point(0, 0);
+    String oldAttr = attrT.getValue().trim();
+    String wordToRead = "translate";
+    int c = 0, cmax = oldAttr.length(), readPos = 0, rMax = wordToRead.length();
+
+    while (c < cmax) {
+      newAttr.append(oldAttr.charAt(c));
+      c++;
+      if (c < cmax && oldAttr.charAt(c-1) == wordToRead.charAt(readPos)) {
+        readPos++;
+        if (readPos == rMax) {
+          readPos = 0;
+          while (c < cmax && oldAttr.charAt(c) == ' ') c++;
+          if (oldAttr.charAt(c) == '(') c++;
+          else core.error("un '(' est attendu !");
+          while (c < cmax && oldAttr.charAt(c) == ' ') c++;
+          StringBuilder strX = new StringBuilder();
+          StringBuilder strY = new StringBuilder();
+          while (c < cmax && oldAttr.charAt(c) != ',' && oldAttr.charAt(c) != ' ') {
+            strX.append(oldAttr.charAt(c++));
+          }
+          while (c < cmax && oldAttr.charAt(c) == ' ') c++;
+          if (oldAttr.charAt(c) == ',') c++;
+          else core.error("un ',' est attendu !");
+          while (c < cmax && oldAttr.charAt(c) == ' ') c++;
+          while (c < cmax && oldAttr.charAt(c) != ')' && oldAttr.charAt(c) != ' ') {
+            strY.append(oldAttr.charAt(c++));
+          }
+          while (c < cmax && oldAttr.charAt(c) == ' ') c++;
+          if (oldAttr.charAt(c) == ')') c++;
+          else core.error("un ')' est attendu !");
+          x = Double.parseDouble(strX.toString());
+          y = Double.parseDouble(strY.toString());
+          newAttr.append("(0, 0)");
+        }
+      }
+    }
+
+
+    attrT.setValue(newAttr.toString());
+    return new Point(x, y);
   }
 
   // effectue les vérifications de base
