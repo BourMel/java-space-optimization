@@ -151,7 +151,9 @@ public class SVGDocument {
       core.debug(" !! pas d'attribut 'd' sur ce path, on ignore.");
       return c;
     }
-    tag.SVGUpgrade(translatePoint);
+    Point translatePointP = transformTransform(tag);
+    translatePointP.translate(translatePoint);
+    tag.SVGUpgrade(translatePointP);
     Attribute attrD = tag.getAttribute("d");
     if (attrD != null) c.addPath((SVGPath) attrD.getInner());
     return c;
