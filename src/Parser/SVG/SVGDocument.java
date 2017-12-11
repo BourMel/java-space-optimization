@@ -30,12 +30,11 @@ public class SVGDocument {
       core.debug("le fichier SVG est composé d'un calque principal");
       Tag layer = firstTagWithName(childs, "g");
       Point translatePoint = transformTransform(layer);
-core.debug(translatePoint.toString());
       if (layer == null) core.error("une erreur est survenue pour trouver <g>");
-      else parseRightLevel(layer.getChilds());
+      else parseRightLevel(layer.getChilds(), translatePoint);
     } else {
       core.debug("le fichier SVG n'est pas composé d'un calque principal");
-      parseRightLevel(childs);
+      parseRightLevel(childs, new Point(0, 0));
     }
   }
 
@@ -117,27 +116,29 @@ core.debug(translatePoint.toString());
     return null;
   }
 
-  private void parseRightLevel(Vector<Tag> tags) {
+  private void parseRightLevel(Vector<Tag> tags, Point translatePoint) {
     for (Tag tag : tags) {
       if (tag.getLowerName().equals("path")) {
         core.debug("on traite une balise path");
         if (tag.getChilds().size() != 0) {
           core.debug("une balise path ne doit pas avoir de fils; on zappe.");
         } else {
-          collections.add(parsePath(tag));
+          collections.add(parsePath(tag, translatePoint));
         }
       } else if (tag.getLowerName().equals("g")) {
         core.debug("on traite une balise g");
         if (tag.getChilds().size() == 0) {
           core.debug("...mais on ne fait rien puisqu'elle est vide");
         } else {
-          collections.add(parseFirstLevel(tag.getChilds()));
+          Point translatePointG = transformTransform(tag);
+          translatePointG.translate(translatePoint);
+          collections.add(parseFirstLevel(tag.getChilds(), translatePointG));
         }
       }
     }
   }
 
-  private SVGPathCollection parsePath(Tag tag) {
+  private SVGPathCollection parsePath(Tag tag, Point translatePoint) {
     SVGPathCollection c = new SVGPathCollection();
     if (!tag.getLowerName().equals("path")) return c;
     core.debug("  --on traite un path");
@@ -150,17 +151,17 @@ core.debug(translatePoint.toString());
       core.debug(" !! pas d'attribut 'd' sur ce path, on ignore.");
       return c;
     }
-    tag.SVGUpgrade();
+    tag.SVGUpgrade(translatePoint);
     Attribute attrD = tag.getAttribute("d");
     if (attrD != null) c.addPath((SVGPath) attrD.getInner());
     return c;
   }
 
-  private SVGPathCollection parseFirstLevel(Vector<Tag> tags) {
+  private SVGPathCollection parseFirstLevel(Vector<Tag> tags, Point translatePoint) {
     SVGPathCollection c = new SVGPathCollection();
     for (Tag tag : tags) {
       if (tag.getLowerName().equals("path")) {
-        c.merge(parsePath(tag));
+        c.merge(parsePath(tag, translatePoint));
       }
     }
     return c;

@@ -9,14 +9,14 @@ public class Tag {
     inner = new XMLTag(name);
   }
 
-  public void SVGUpgrade() {
+  public void SVGUpgrade(Point translatePoint) {
     SVGPathTag path = new SVGPathTag();
     path.setDeep(inner.getDeep());
 
     // on ajoute les différents attributs
     for (Attribute attr : inner.getAttributes()) {
       if (attr.getLowerName().equals("d")) {
-        attr.SVGUpgrade();
+        attr.SVGUpgrade(translatePoint);
       }
       path.addAttribute(attr);
     }

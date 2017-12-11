@@ -15,6 +15,11 @@ public class Point {
     return y;
   }
 
+  public void translate(Point otherPoint) {
+    x += otherPoint.getX();
+    y += otherPoint.getY();
+  }
+
   public String toString() {
     return "(" + x + ", " + y + ")";
   }

@@ -13,10 +13,11 @@ public class SVGPath extends XMLAttribute {
   private double lastDouble;
   private Path2D path;
   private Point lastPoint;
+  private Point translationPoint;
 
   private Core core;
 
-  public SVGPath(String value) {
+  public SVGPath(String value, Point tPoint) {
     super("d");
     core = Core.getInstance();
     setValue("upgraded");
@@ -25,7 +26,7 @@ public class SVGPath extends XMLAttribute {
     cursor = 0;
     lastDouble = 0;
     parse();
-    scale(core.getZoom());
+    translationPoint = tPoint;
     scale(core.getZoom());
   }
 
@@ -299,8 +300,9 @@ public class SVGPath extends XMLAttribute {
    * @param double échelle
    */
   public void scale(double value) {
-    AffineTransform size = new AffineTransform();
-    size.scale(value, value);
-    if (path != null) path.transform(size);
+    AffineTransform at = new AffineTransform();
+    at.translate(translationPoint.getX() * value, translationPoint.getY() * value);
+    at.scale(value, value);
+    if (path != null) path.transform(at);
   }
 }

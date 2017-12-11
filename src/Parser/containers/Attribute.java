@@ -11,9 +11,11 @@ public class Attribute {
     inner = new XMLAttribute(name, value);
   }
 
-  public void SVGUpgrade() {
+  public void SVGUpgrade(Point translationPoint) {
     if (getLowerName().equals("d")) {
-      SVGPath path = new SVGPath(getValue());
+      SVGPath path = new SVGPath(getValue(), translationPoint);
+System.out.println(translationPoint.toString());
+
       path.setSeparator(inner.getSeparator());
       inner = path;
     }
