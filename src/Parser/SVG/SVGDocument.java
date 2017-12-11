@@ -164,6 +164,10 @@ public class SVGDocument {
     for (Tag tag : tags) {
       if (tag.getLowerName().equals("path")) {
         c.merge(parsePath(tag, translatePoint));
+      } else if (tag.getLowerName().equals("g")) {
+        Point translatePointG = transformTransform(tag);
+        translatePointG.translate(translatePoint);
+        c.merge(parseFirstLevel(tag.getChilds(), translatePointG));
       }
     }
     return c;
