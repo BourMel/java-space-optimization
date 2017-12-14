@@ -17,13 +17,13 @@ Ensuite pour compiler le projet :
 make
 ```
 
-et pour l'éxécuter :
+et pour l'exécuter :
 
 ```sh
 make run
 ```
 
-et le combo compiler + éxécuter :
+et le combo compiler + exécuter :
 
 ```sh
 make && make run

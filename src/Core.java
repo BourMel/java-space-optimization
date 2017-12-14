@@ -3,7 +3,10 @@ import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
-// Classe (singleton threadsafe) qui contient un peu toutes les ressources
+/**
+ * Le Core permet de centraliser l'ensemble des ressources
+ * Singleton et threadsafe
+ */
 class Core {
   private static Core instance;
   private boolean printDebug = true;
@@ -13,6 +16,9 @@ class Core {
 
   private SVGDocument svg = null;
 
+  /**
+   * Constructeur
+   */
   private Core() {
     // initialisation du parseur
     parser = new Parser();
@@ -25,6 +31,10 @@ class Core {
     });
   }
 
+  /**
+   * Récupérer l'unique instance du Core
+   * @return Core.instance
+   */
   public static Core getInstance() {
     if (instance == null) { // meilleures perfs
       synchronized (Core.class) {
@@ -36,45 +46,78 @@ class Core {
     return instance;
   }
 
+  /**
+   * Parse le SVG et le place dans l'attribut Core.svg
+   * @param url du fichier svg à parser
+   */
   public void parse(String url) {
     svg = parser.parse(url);
   }
 
+  /**
+   * Récupère le svg sous forme de chaîne de caractères
+   * @return svg
+   */
   public String getParsedContent() {
     return (svg != null) ? svg.toString() : "";
   }
 
+  /**
+   * Récupère le svg
+   * @return svg
+   */
   public SVGDocument getSVG() {
     return svg;
   }
 
+  /**
+   * Lance le mode debug (affiche plus d'informations)
+   */
   public void startDebug() {
     printDebug = true;
   }
 
+  /**
+   * Arrête le mode debug
+   */
   public void stopDebug() {
     printDebug = false;
   }
 
+  /**
+   * Affiche un message uniquement en situation de debug
+   */
   public void debug(String msg) {
     if (printDebug) {
       System.out.println("DEBUG: " + msg);
     }
   }
 
+  /**
+   * Affiche un message d'erreur et arrête le programme
+   */
   public void error(String msg) {
     System.out.println("ERROR: " + msg);
     System.exit(1);
   }
 
+  /**
+   *
+   */
   public void setSvgUri(String uri) {
     i.setCurrentURI(uri);
   }
 
+  /**
+   *
+   */
   public String getSvgUri() {
     return i.getCurrentURI();
   }
 
+  /**
+   *
+   */
   private void changeLookDefaultUI() {
     try {
       for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -91,19 +134,33 @@ class Core {
     }
   }
 
+  /**
+   * Envoie un niveau de zoom à l'interface
+   * @param zoom niveau de zoom souhaité (1 par défaut)
+   */
   public void setZoom(double zoom) {
     i.changeZoom(zoom);
     this.zoom = zoom;
   }
 
+  /**
+   * Récupérer le niveau de zoom utilisé
+   * @return zoom
+   */
   public double getZoom() {
     return zoom;
   }
 
+  /**
+   * Empêche l'utilisateur d'interagir avec les composants de l'interface
+   */
   public void disableComponents() {
     i.disableComponents();
   }
 
+  /**
+   * Autorise l'utilisateur à interagir avec les composants de l'interface
+   */
   public void enableComponents() {
     i.enableComponents();
   }
