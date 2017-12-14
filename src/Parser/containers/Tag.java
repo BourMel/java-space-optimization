@@ -32,9 +32,9 @@ public class Tag {
     inner.addAttribute(a);
   }
 
-  public void addAttributes(Vector<Attribute> a) {
-    inner.addAttributes(a);
-  }
+  // public void addAttributes(Vector<Attribute> a) {
+  //   inner.addAttributes(a);
+  // }
 
   public boolean hasAttribute(String name) {
     return inner.hasAttribute(name);

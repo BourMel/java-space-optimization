@@ -6,7 +6,9 @@ class Parser {
   private XMLDocument xml = null;
   private SVGDocument svg;
 
-  // constructeur
+  /**
+   * Constructeurs
+   */
   public Parser(String url) {
     parser = new XMLParser();
     parse(url);
@@ -16,6 +18,12 @@ class Parser {
     parser = new XMLParser();
   }
 
+  /**
+   * Indique l'url au parseur, le lance, et enregistre le SVGDocument
+   * dans l'attribut svg
+   * @param url du fichier à parser
+   * @return SVGDocument correspondant au fichier SVG parsé
+   */
   public SVGDocument parse(String url) {
     parser.setUrl(url);
     try {
@@ -29,8 +37,10 @@ class Parser {
     return svg;
   }
 
-  // on affiche le SVG sous forme de texte dans le cas où
-  // l'on souhaite le sauvegarder dans un fichier
+  /**
+   * Affichage du SVG en tant que String (pour la sauvegarde dans un fichier)
+   * @return la chaîne de caractère représentant le SVG
+   */
   public String toString() {
     return parser.toString();
   }

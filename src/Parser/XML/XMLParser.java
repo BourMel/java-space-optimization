@@ -22,7 +22,9 @@ public class XMLParser {
   private Vector<Attribute> xmlProlog;
   private Tag firstTag; // balise prncipale
 
-  // constructeurs
+  /**
+   * Constructeurs
+   */
   public XMLParser() {
   }
 
@@ -30,7 +32,10 @@ public class XMLParser {
     this.url = url;
   }
 
-  // méthode principale
+  /**
+   * Lance le parseur (méthode principale)
+   * @return XMLDocument à partir de l'url
+   */
   public XMLDocument parse() throws IOException {
     cursor = 0;
     contentLength = 0;
@@ -41,7 +46,10 @@ public class XMLParser {
     return new XMLDocument(xmlProlog, firstTag);
   }
 
-  // récupère un Stream du contenu (local ou depuis une URL d'un fichier web)
+  /**
+   * Récupérer une lecture du contenu (local/depuis une URL)
+   * @return Stream<String> le contenu du fichier
+   */
   private Stream<String> fetchStream() throws IOException {
     if (url.startsWith("http")) { // s'il s'agit d'une URL
       InputStream is = new URL(url).openConnection().getInputStream();
@@ -52,7 +60,10 @@ public class XMLParser {
     }
   }
 
-  // récupère le contenu, le met en une seule ligne, et le nettoie
+  /**
+   * Utilise le fichier récupéré par fetchStream :
+   * Récupère le contenu, le met en une ligne unique, le nettoie
+   */
   private void fetchContent() throws IOException {
     StringBuilder contentBuilder = new StringBuilder();
     Stream<String> stream = fetchStream();
@@ -69,7 +80,9 @@ public class XMLParser {
     contentLength = content.length();
   }
 
-  // parse le prologue XML
+  /**
+   * Parse le prologue (première ligne du fichier XML)
+   */
   public void parseXMLProlog() {
     xmlProlog = new Vector<Attribute>();
     Attribute attr;
@@ -83,24 +96,36 @@ public class XMLParser {
     }
   }
 
-  // booléen pour dire s'il y a du contenu à parser ou non
+  /**
+   * Indique s'il y a du contenu à parser
+   * @return boolean
+   */
   private boolean isContent() {
     return content != null && !content.isEmpty();
   }
 
-  // on laisse le "noyau" gérer les erreurs
+  /**
+   * Envoi de l'erreur au noyau (Core)
+   * @param string à afficher
+   */
   private void error(String str) {
     Core core = Core.getInstance();
     core.error(str);
   }
 
-  // on incrémente le curseur pour chaque "espace" rencontré
+  /**
+   * Incrémentation du curseur à la lecture d'un "espace"
+   */
   private void read_spaces() {
     if (!isContent()) error("Contenu vide !");
     while (cursor < contentLength && content.charAt(cursor) == ' ') cursor++;
   }
 
-  // renvoie vrai si on a pu lire le caractère souhaité, faux sinon
+  /**
+   * Indique si le caractère attendu a été lu
+   * @param caractère attendu
+   * @return boolean qui indique s'il a été lu
+   */
   private boolean read_char(char c) {
     if (!isContent()) error("Contenu vide !");
     if (cursor < contentLength && content.charAt(cursor) == c) {
@@ -111,7 +136,11 @@ public class XMLParser {
     return false;
   }
 
-  // renvoie vrai si on a pu lire la chaîne de caractères souhaitée, faux sinon
+  /**
+   * Indique si la chaîne attendue a été lue
+   * @param chaîne attendue
+   * @return boolean qui indique si elle a été lue
+   */
   private boolean read_string(String str) {
     if (!isContent()) error("Contenu vide !");
     int initCursor = cursor;
@@ -126,7 +155,11 @@ public class XMLParser {
     return true;
   }
 
-  // version insensible à la casse
+  /**
+   * Indique si la chaîne attendue a été lue sans prendre compte de la casse
+   * @param chaîne attendue
+   * @return boolean qui indique si elle a été lue
+   */
   private boolean read_string_insensitive(String str) {
     if (!isContent()) error("Contenu vide !");
     int initCursor = cursor;
@@ -142,7 +175,10 @@ public class XMLParser {
     return true;
   }
 
-  // indique si le caractère peut appartenir à un nom d'attribut
+  /**
+   * Indique si le caractère peut appartenir à un nom d'attribut
+   * @return boolean
+   */
   private boolean isCharForAttr() {
     char currentChar = content.charAt(cursor);
     return ((currentChar >= 'a' && currentChar <= 'z')
@@ -152,14 +188,20 @@ public class XMLParser {
       || currentChar == '_');
   }
 
-  // indique si le caractère peut appartenir à la valeur d'un attribut
+  /**
+   * Indique si le caractère peut appartenir à une valeur d'attribut
+   * @return boolean
+   */
   private boolean isCharForAttrValue(boolean allowSpaces, char separator) {
     char currentChar = content.charAt(cursor);
     if (allowSpaces) return currentChar != separator;
     else return currentChar != ' ';
   }
 
-  // permet de lire un attribut
+  /**
+   * Lecture d'un attribut
+   * @return l'attribut lu
+   */
   private Attribute read_attribute() {
     if (!isContent()) error("Contenu vide !");
     Attribute attr = null;
@@ -189,7 +231,10 @@ public class XMLParser {
     return attr;
   }
 
-  // permet de lire une chaîne de caractère entre deux balises
+  /**
+   * Lecture du contenu compris entre deux balises
+   * @return le contenu lu
+   */
   private String read_tagString() {
     read_spaces();
     lastChar = content.charAt(cursor++);
@@ -202,14 +247,19 @@ public class XMLParser {
     return s.toString().trim();
   }
 
-  // permet de lire la première balise où tout se trouve dedans
+  /**
+   * Lecture de la première balise, qui contient toutes les autres
+   */
   private void read_firstTag() {
     deep = 0;
     firstTag = read_tag();
     if (firstTag == null) error("Aucune balise trouvée.");
   }
 
-  // permet de lire une balise quelconque
+  /**
+   * Lecture d'un tag quelconque, dans sa totalité (attributs)
+   * @return Tag lu à partir du XML
+   */
   private Tag read_tag() {
     Tag resTag, t;
     StringBuilder tagName = new StringBuilder();
@@ -236,7 +286,7 @@ public class XMLParser {
       resTag.addAttribute(attr);
       read_spaces();
     }
-    resTag.setDeep(deep++); // on entre dans une balise, on augmente le lvl
+    resTag.setDeep(deep++); // entrée dans une balise : augmente la profondeur
     if (read_string("/>")) {
       resTag.setAutoClose();
       deep--; // si c'était une balise auto-fermante, on le rabaisse à nouveau
@@ -269,9 +319,11 @@ public class XMLParser {
     return resTag;
   }
 
-  // permet de définir une URL
+  /**
+   * Définition de l'URL à traiter
+   * @param url
+   */
   public void setUrl(String url) {
     this.url = url;
   }
 }
-

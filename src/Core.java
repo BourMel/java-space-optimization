@@ -102,21 +102,23 @@ class Core {
   }
 
   /**
-   *
+   * Indique l'url à parser à l'interface
+   * @param url l'url à parser
    */
   public void setSvgUri(String uri) {
     i.setCurrentURI(uri);
   }
 
   /**
-   *
+   * Récupère l'url à parser depuis le champ dédié de l'interface
+   * @return String représentant l'url indiquée par l'utilisateur
    */
   public String getSvgUri() {
     return i.getCurrentURI();
   }
 
   /**
-   *
+   * Personnalisation de la fenêtre
    */
   private void changeLookDefaultUI() {
     try {
