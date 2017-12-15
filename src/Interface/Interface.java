@@ -26,18 +26,18 @@ public class Interface extends JFrame {
   private JLabel zoomLabel;
   private JSlider zoom;
   private SliderListener zoomListener;
-  private JLabel leftLabel;
-  private JSlider left;
-  private JLabel topLabel;
-  private JSlider top;
+  private JLabel heightLabel;
+  private JTextField height;
+  private JLabel timeoutLabel;
+  private JTextField timeout;
 
   private final String INTERFACE_TITLE = "Optimisation de découpe de formes";
   private final int INTERFACE_WIDTH = 650;
   private final int INTERFACE_HEIGHT = 450;
   private final String URI_FILE_LABEL = "URI du fichier SVG :";
   private final String ZOOM_LABEL = "Niveau de zoom";
-  private final String LEFT_LABEL = "Décalage à gauche";
-  private final String TOP_LABEL = "Décalage en haut";
+  private final String HEIGHT_LABEL = "Hauteur du tissu";
+  private final String TIMEOUT_LABEL = "Temps avant arrêt";
 
   /**
    * Constructeur de l'interface utilisateur dans son ensemble
@@ -70,11 +70,10 @@ public class Interface extends JFrame {
     zoomLabel = new JLabel();
     zoom = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
     zoomListener = new SliderListener();
-
-    leftLabel = new JLabel();
-    left = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
-    topLabel = new JLabel();
-    top = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
+    heightLabel = new JLabel();
+    height = new JTextField();
+    timeoutLabel = new JLabel();
+    timeout = new JTextField();
 
     setTitle(INTERFACE_TITLE);
     setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -84,8 +83,8 @@ public class Interface extends JFrame {
     uriFileLabel.setText(URI_FILE_LABEL);
     uriFileText.setFont(new Font("Cantarell", 0, 12));
     zoomLabel.setText(ZOOM_LABEL);
-    leftLabel.setText(LEFT_LABEL);
-    topLabel.setText(TOP_LABEL);
+    heightLabel.setText(HEIGHT_LABEL);
+    timeoutLabel.setText(TIMEOUT_LABEL);
 
     zoom.addChangeListener(zoomListener);
 
@@ -123,16 +122,16 @@ public class Interface extends JFrame {
             200,
             200)
           .addComponent(zoom)
-          .addComponent(topLabel,
+          .addComponent(timeoutLabel,
             GroupLayout.DEFAULT_SIZE,
             200,
             200)
-          .addComponent(top)
-          .addComponent(leftLabel,
+          .addComponent(timeout)
+          .addComponent(heightLabel,
             GroupLayout.DEFAULT_SIZE,
             200,
             200)
-          .addComponent(left))
+          .addComponent(height))
         .addPreferredGap(ComponentPlacement.RELATED)
         .addComponent(drawingPane,
           GroupLayout.DEFAULT_SIZE,
@@ -167,10 +166,10 @@ public class Interface extends JFrame {
           60,
           GroupLayout.PREFERRED_SIZE)
         .addContainerGap()
-        .addComponent(topLabel)
-        .addComponent(top)
-        .addComponent(leftLabel)
-        .addComponent(left))
+        .addComponent(timeoutLabel)
+        .addComponent(timeout)
+        .addComponent(heightLabel)
+        .addComponent(height))
       .addComponent(drawingPane)
     );
 
@@ -192,6 +191,22 @@ public class Interface extends JFrame {
   public String getCurrentURI() {
     return uriFileText.getText();
   }
+
+  /**
+   * Récupérer la valeur souhaitée du timeout
+   * @return timeout sous forme de chaîne de caractères
+   */
+   public String getCurrentTimeout() {
+     return timeout.getText();
+   }
+
+   /**
+    * Récupérer la hauteur de tissu souhaitée
+    * @return hauteur sous forme de texte
+    */
+    public String getCurrentHeight() {
+      return height.getText();
+    }
 
   /**
    * Empêche l'utilisateur d'interagir avec les éléments de la fenêtre
