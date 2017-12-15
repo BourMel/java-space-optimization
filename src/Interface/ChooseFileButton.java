@@ -7,6 +7,9 @@ import javax.swing.JFileChooser;
 
 public class ChooseFileButton extends JButton {
 
+  /**
+   * Constructeur du bouton permettant de choisir un fichier
+   */
   public ChooseFileButton() {
     super();
 
@@ -18,6 +21,10 @@ public class ChooseFileButton extends JButton {
     });
   }
 
+  /**
+   * Définit l'action au clic sur le bouton
+   * Ici l'ouverture d'une boîte de dialogue pour choisir un fichier
+   */
   public void chooseFileAction() {
     File choosedFile;
     String choosedFileName;

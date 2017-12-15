@@ -7,10 +7,17 @@ public class SliderListener implements ChangeListener {
 
   private Core core;
 
+  /**
+   * Constructeur du listener placé sur le curseur de zoom
+   */
   public SliderListener() {
     core = Core.getInstance();
   }
 
+  /**
+   * Définit le comportement à chaque évolution du curseur de zoom
+   * Ici, envoi de cette information au noyau (Core)
+   */
   public void stateChanged(ChangeEvent e) {
     JSlider source = (JSlider) e.getSource();
 

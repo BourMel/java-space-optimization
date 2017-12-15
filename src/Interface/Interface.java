@@ -39,16 +39,26 @@ public class Interface extends JFrame {
   private final String LEFT_LABEL = "Décalage à gauche";
   private final String TOP_LABEL = "Décalage en haut";
 
+  /**
+   * Constructeur de l'interface utilisateur dans son ensemble
+   */
   public Interface() {
     initComponents();
   }
 
+  /**
+   * Choix du niveau de zoom par l'utilisateur
+   * @param zoom dont la valeur par défaut est à 1
+   */
   public void changeZoom(double zoom) {
     if (zoomLabel != null) {
       zoomLabel.setText(ZOOM_LABEL + " (" + zoom + "x)");
     }
   }
 
+  /**
+   * Initialisation de l'ensemble des composants de la fenêtre
+   */
   private void initComponents() {
     fileChooserBtn = new ChooseFileButton();
     uriFileLabel = new JLabel();
@@ -167,14 +177,25 @@ public class Interface extends JFrame {
     pack();
   }
 
+  /**
+   * Définit l'URL correspondant au fichier actuellement traité
+   * @param url à traiter
+   */
   public void setCurrentURI(String uri) {
     uriFileText.setText(uri);
   }
 
+  /**
+   * Récupérer l'url du SVG actuellement traité
+   * @return url sous forme de chaine de caractères
+   */
   public String getCurrentURI() {
     return uriFileText.getText();
   }
 
+  /**
+   * Empêche l'utilisateur d'interagir avec les éléments de la fenêtre
+   */
   public void disableComponents() {
     fileChooserBtn.setEnabled(false);
     uriFileText.setEnabled(false);
@@ -182,6 +203,9 @@ public class Interface extends JFrame {
     actionBtn.setText(">> Recommencer <<");
   }
 
+  /**
+   * Permet à l'utilisateur d'interagir avec les éléments de la fenêtre
+   */
   public void enableComponents() {
     fileChooserBtn.setEnabled(true);
     uriFileText.setEnabled(true);

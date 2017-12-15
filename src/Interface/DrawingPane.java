@@ -9,6 +9,9 @@ public class DrawingPane extends JScrollPane {
 
   private DrawingZone drawingZone;
 
+  /**
+   * Constructeur du conteneur de la zone où le SVG est dessiné
+   */
   public DrawingPane() {
     super();
 

@@ -7,6 +7,9 @@ public class RunButton extends JButton {
 
   private boolean started = false;
 
+  /**
+   * Constructeur du bouton permettant de lancer le parseur
+   */
   public RunButton() {
     super();
 
@@ -18,6 +21,11 @@ public class RunButton extends JButton {
     });
   }
 
+  /**
+   * Définit l'action au clic
+   * Ici, lancer le parseur et remplir la fenêtre avec le SVG
+   * Ou au contraire, permettre de réactiver les composants de la fenêtre
+   */
   public void runAction() {
     Core core = Core.getInstance();
     core.debug("clic sur le bouton effectué !");

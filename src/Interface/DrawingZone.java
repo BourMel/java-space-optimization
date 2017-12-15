@@ -23,6 +23,9 @@ public class DrawingZone extends JPanel {
   private Vector<SVGPathCollection> collections;
   private Core core;
 
+  /**
+   * Constructeur de l'emplacement où le SVG s'affiche
+   */
   private DrawingZone() {
     super();
     core = Core.getInstance();
@@ -30,6 +33,10 @@ public class DrawingZone extends JPanel {
     resizeZone(8000, 6000);
   }
 
+  /**
+   * Récupérer l'instance active
+   * @return Drawingzone : emplacement où le SVG s'affiche
+   */
   public static DrawingZone getInstance() {
     if (instance == null) {
       synchronized (Core.class) {

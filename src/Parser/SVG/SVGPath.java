@@ -174,6 +174,7 @@ public class SVGPath extends XMLAttribute {
 
   /**
    * Indique si on a pu lire le caractère souhaité
+   * et le place dans lastChar
    * @param caractère à lire
    * @return boolean
    */
@@ -282,12 +283,12 @@ public class SVGPath extends XMLAttribute {
    * Lecture d'une des actions du SVG
    * @return boolean
    */
-  public boolean read_action() {
+  private boolean read_action() {
     return read_char_insensitive('m') || read_char_insensitive('l')
       || read_char_insensitive('q') || read_char_insensitive('c')
       || read_char_insensitive('z');
   }
-  
+
   /**
    * Retourne, sous forme de chaîne de caractère, le contenu de l'attribut "g"
    * Ne sont pas implémentés : H (horizontal lineto), V (vertical lineto),
