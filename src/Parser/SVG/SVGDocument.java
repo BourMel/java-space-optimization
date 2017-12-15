@@ -6,7 +6,7 @@ public class SVGDocument {
   private XMLDocument xml;
   private Core core;
   private Vector<SVGPathCollection> collections;
-
+  
   public SVGDocument(XMLDocument xml) {
     collections = new Vector<SVGPathCollection>();
     this.xml = xml;

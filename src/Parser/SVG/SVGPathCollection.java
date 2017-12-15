@@ -1,41 +1,62 @@
 import java.util.Vector;
 
-
-// groupe de paths
+/**
+ * Groupe de paths (collection)
+ */
 public class SVGPathCollection {
 
   private Vector<SVGPath> paths;
 
-  // construit une nouvelle collection vide
+  /**
+   * Constructeur
+   * Ici, collection vide
+   */
   public SVGPathCollection() {
     paths = new Vector<SVGPath>();
   }
 
-  // construit une nouvelle collection avec un path
+  /**
+   * Constructeur
+   * Ici, collection avec un path
+   * @param chemin à ajouter au groupe
+   */
   public SVGPathCollection(SVGPath path) {
     paths = new Vector<SVGPath>();
     addPath(path);
   }
 
-  // retourne la liste des paths de la collection
+  /**
+   * Retourne la liste des paths de la collection
+   * @return vecteur de paths
+   */
   public Vector<SVGPath> getPaths() {
     return paths;
   }
 
-  // ajoute un path à la collection
+  /**
+   * Ajoute un path à la collection
+   * @param chemin à ajouter au groupe
+   */
   public void addPath(SVGPath path) {
     if (path != null) {
       paths.add(path);
     }
   }
 
-  // permet de fusionner une autre collection avec celle-ci
+  /**
+   * Ajouter une collection de paths à celle-ci pour n'en former qu'une
+   * @param vecteur de paths à ajouter
+   */
   public void merge(SVGPathCollection c) {
     for (SVGPath path : c.getPaths()) {
       addPath(path);
     }
   }
 
+  /**
+   * Retourne la collection de path sous forme de chaîne de caractères
+   * @return chaine de caractères représentant le groupe
+   */
   public String toString() {
     StringBuilder r = new StringBuilder();
     if (paths.size() == 0) return r.toString();

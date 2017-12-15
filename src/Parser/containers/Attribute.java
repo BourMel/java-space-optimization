@@ -14,8 +14,6 @@ public class Attribute {
   public void SVGUpgrade(Point translationPoint) {
     if (getLowerName().equals("d")) {
       SVGPath path = new SVGPath(getValue(), translationPoint);
-System.out.println(translationPoint.toString());
-
       path.setSeparator(inner.getSeparator());
       inner = path;
     }
