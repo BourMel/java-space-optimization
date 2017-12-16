@@ -1,4 +1,5 @@
 import java.util.Vector;
+import java.awt.geom.Area;
 
 /**
  * Groupe de paths (collection)
@@ -93,6 +94,59 @@ public class SVGPathCollection {
 
      return minX;
    }
+
+  /**
+   * Récupère le point le plus haut du groupe
+   * @return valeur y la plus faible
+   */
+   public double getBoundsY() {
+     double minY = 9999999;
+
+     for(SVGPath path : paths) {
+       if(path.getPath().getBounds().y < minY) {
+         minY = path.getPath().getBounds().y;
+       }
+     }
+
+     return minY;
+   }
+
+   /**
+    * Récupère la hauteur du groupe
+    * @result double
+    */
+    public double getHeight() {
+      Area total = new Area();
+      Area one;
+
+      for(SVGPath path : paths) {
+        one = new Area(path.getPath());
+        total.add(one);
+      }
+      
+      return total.getBounds().height;
+    }
+
+
+   /**
+    * Détecte l'intersection d'un des chemins du groupe avec un autre
+    * @return boolean
+    */
+    public boolean intersect(SVGPathCollection c) {
+      Vector<SVGPath> others = c.getPaths();
+      Area otherA, pathA;
+
+      for(SVGPath other : others) {
+        for(SVGPath path : paths) {
+          otherA = new Area(other.getPath());
+          pathA = new Area(path.getPath());
+
+          otherA.intersect(pathA);
+          return !otherA.isEmpty();
+        }
+      }
+      return false;
+    }
 
   // /**
   //  * Mise à l'échelle d'un groupe de chemin

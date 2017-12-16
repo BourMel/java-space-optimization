@@ -55,7 +55,6 @@ class Core {
    */
   public void parse(String url) {
     svg = parser.parse(url);
-System.out.println("let's try that");
     svg = algo.getResult(svg);
   }
 
