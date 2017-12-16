@@ -9,10 +9,11 @@ import javax.swing.UnsupportedLookAndFeelException;
  */
 class Core {
   private static Core instance;
-  private boolean printDebug = true;
+  private boolean printDebug = false;
   private Parser parser;
   private Interface i;
   private double zoom = 1; // zoom level
+  private Optimisation algo;
 
   private SVGDocument svg = null;
 
@@ -22,6 +23,8 @@ class Core {
   private Core() {
     // initialisation du parseur
     parser = new Parser();
+    // et de l'algo d'optimisation
+    algo = new Optimisation();
 
     // initialisation de l'UI
     changeLookDefaultUI();
@@ -52,6 +55,8 @@ class Core {
    */
   public void parse(String url) {
     svg = parser.parse(url);
+System.out.println("let's try that");
+    svg = algo.getResult(svg);
   }
 
   /**

@@ -73,10 +73,26 @@ public class SVGPathCollection {
    */
   public void translate(double xTransform, double yTransform) {
     for (SVGPath path : paths) {
-      // path.translateX(xTransform);
+      path.translateX(xTransform);
       path.translateY(yTransform);
     }
   }
+
+  /**
+   * Récupère le point le plus à gauche du groupe
+   * @return valeur x la plus faible
+   */
+   public double getBoundsX() {
+     double minX = 9999999;
+
+     for(SVGPath path : paths) {
+       if(path.getPath().getBounds().x < minX) {
+         minX = path.getPath().getBounds().x;
+       }
+     }
+
+     return minX;
+   }
 
   // /**
   //  * Mise à l'échelle d'un groupe de chemin

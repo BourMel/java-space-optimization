@@ -12,8 +12,6 @@ public class SVGDocument {
     this.xml = xml;
     core = Core.getInstance();
     parse();
-
-    collections.get(0).translate(2000, 2000);
   }
 
   private void parse() {
