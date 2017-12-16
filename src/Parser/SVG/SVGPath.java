@@ -333,25 +333,29 @@ public class SVGPath extends XMLAttribute {
     return path;
   }
 
-  // /**
-  //  *  Déplacement gauche-droite du path
-  //  *  @param double décalage de x
-  //  */
-  // public void translateX(double value) {
-  //   AffineTransform right = new AffineTransform();
-  //   right.translate(value, 0);
-  //   if (path != null) path.transform(right);
-  // }
+  /**
+   *  Déplacement gauche-droite du path
+   *  @param double décalage de x
+   */
+  public void translateX(double value) {
+    AffineTransform right = new AffineTransform();
+    value *= core.getZoom();
 
-  // /**
-  //  * Déplacement haut-bas du path
-  //  * @param double décalage de y
-  //  */
-  // public void translateY(double value) {
-  //   AffineTransform bottom = new AffineTransform();
-  //   bottom.translate(0, value);
-  //   if (path != null) path.transform(bottom);
-  // }
+    right.translate(value, 0);
+    if(path != null) path.transform(right);
+  }
+
+  /**
+   * Déplacement haut-bas du path
+   * @param double décalage de y
+   */
+  public void translateY(double value) {
+    AffineTransform bottom = new AffineTransform();
+    value *= core.getZoom();
+
+    bottom.translate(0, value);
+    if(path != null) path.transform(bottom);
+  }
 
   /**
    * Mise à l'échelle du path (proportionelle)

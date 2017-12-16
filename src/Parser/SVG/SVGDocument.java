@@ -6,12 +6,14 @@ public class SVGDocument {
   private XMLDocument xml;
   private Core core;
   private Vector<SVGPathCollection> collections;
-  
+
   public SVGDocument(XMLDocument xml) {
     collections = new Vector<SVGPathCollection>();
     this.xml = xml;
     core = Core.getInstance();
     parse();
+
+    collections.get(0).translate(2000, 2000);
   }
 
   private void parse() {

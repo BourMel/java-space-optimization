@@ -68,15 +68,15 @@ public class SVGPathCollection {
     return r.toString();
   }
 
-  // /**
-  //  * Translation d'un groupe de chemin
-  //  */
-  // public void translate(double xTransform, double yTransform) {
-  //   for (SVGPath path : paths) {
-  //     path.translateX(xTransform);
-  //     path.translateY(yTransform);
-  //   }
-  // }
+  /**
+   * Translation d'un groupe de chemin
+   */
+  public void translate(double xTransform, double yTransform) {
+    for (SVGPath path : paths) {
+      // path.translateX(xTransform);
+      path.translateY(yTransform);
+    }
+  }
 
   // /**
   //  * Mise à l'échelle d'un groupe de chemin
