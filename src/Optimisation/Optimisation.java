@@ -19,15 +19,19 @@ public class Optimisation {
   public SVGDocument getResult(SVGDocument svg) {
 
     boolean first = true;
-    int count;
+    int count = 0;
     Vector<SVGPathCollection> groups = new Vector<SVGPathCollection>();
     document = svg;
     groups = svg.getCollections();
     double height;
+    double heightBefore = 0;
     int sizeVect = groups.size();
+    SVGPathCollection lastGroup = groups.get(0);
 
+    //pour chaque groupe
     for(SVGPathCollection group : groups) {
-      count = 0;
+      //indique le groupe actif
+      count++;
 
       height = group.getHeight();
       //place l'ensemble des chemins à gauche du document
@@ -39,42 +43,15 @@ public class Optimisation {
         group.translate(0, -1);
       }
 
-      if(!first) {
-        // System.out.println("i'm working here");
-        //déplace vers le bas
-
-        for(SVGPathCollection group2 : groups) {
-
-          if(group.intersect(group2)) {
-
-
-            if(count < sizeVect-1) {
-              group.translate(0, group2.getHeight());
-
-            } else {
-              while(group.intersect(group2)) {
-                  group.translate(0, 1);
-              }
-            }
-            count++;
-
-          }
-
-          // System.out.println("intersect ?");
-          // while(group.intersect(group2)) {
-          //   group.translate(0, 1);
-          //   System.out.println("it does ! i translate");
-          // }
-        }
-
-      } else {
-        first = false;
+      //on laisse le premier à son emplacement
+      if(count > 1) {
+        //pour chaque groupe < au courant, on le décale de la hauteur des précédents
+        group.translate(0, heightBefore);
       }
-    }
 
-
-
-
+      heightBefore += group.getHeight();
+      lastGroup = group;
+      }
 
     return document;
   }
