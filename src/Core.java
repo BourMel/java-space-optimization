@@ -56,8 +56,7 @@ class Core {
   public void parse(String url) {
     svg = parser.parse(url);
     double height = i.getCurrentHeight();
-    // if(height)
-    height *= zoom;
+    height *= zoom; //hauteur de rouleau proportionnelle au zoom (résultats visuels constants)
     svg = algo.getResult(svg, height);
   }
 
