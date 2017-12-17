@@ -13,6 +13,8 @@ import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
 
+import java.lang.Double;
+
 
 public class Interface extends JFrame {
 
@@ -202,10 +204,19 @@ public class Interface extends JFrame {
 
    /**
     * Récupérer la hauteur de tissu souhaitée
-    * @return hauteur sous forme de texte
+    * @return hauteur (double)
     */
-    public String getCurrentHeight() {
-      return height.getText();
+    public double getCurrentHeight() {
+      String heightS = height.getText();
+      double result;
+
+      if(heightS.isEmpty()) {
+        result = 0;
+      } else {
+        result = Double.parseDouble(heightS);
+      }
+
+      return result;
     }
 
   /**

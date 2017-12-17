@@ -123,30 +123,48 @@ public class SVGPathCollection {
         one = new Area(path.getPath());
         total.add(one);
       }
-      
+
       return total.getBounds().height;
     }
 
+    /**
+     * Récupère la largeur du groupe
+     * @result double
+     */
+     public double getWidth() {
+       Area total = new Area();
+       Area one;
 
-   /**
-    * Détecte l'intersection d'un des chemins du groupe avec un autre
-    * @return boolean
-    */
-    public boolean intersect(SVGPathCollection c) {
-      Vector<SVGPath> others = c.getPaths();
-      Area otherA, pathA;
+       for(SVGPath path : paths) {
+         one = new Area(path.getPath());
+         total.add(one);
+       }
 
-      for(SVGPath other : others) {
-        for(SVGPath path : paths) {
-          otherA = new Area(other.getPath());
-          pathA = new Area(path.getPath());
+       return total.getBounds().width;
+     }
 
-          otherA.intersect(pathA);
-          return !otherA.isEmpty();
+
+     /**
+      * Détecte l'intersection d'un des chemins du groupe avec un autre
+      * @return boolean
+      */
+      public boolean intersect(SVGPathCollection c) {
+        Vector<SVGPath> others = c.getPaths();
+        Area otherA, pathA;
+
+        for(SVGPath other : others) {
+          for(SVGPath path : paths) {
+            otherA = new Area(other.getPath());
+            pathA = new Area(path.getPath());
+
+            otherA.intersect(pathA);
+            if(!otherA.isEmpty()) {
+                return true;
+            }
+          }
         }
+        return false;
       }
-      return false;
-    }
 
   // /**
   //  * Mise à l'échelle d'un groupe de chemin

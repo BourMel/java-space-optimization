@@ -55,7 +55,10 @@ class Core {
    */
   public void parse(String url) {
     svg = parser.parse(url);
-    svg = algo.getResult(svg);
+    double height = i.getCurrentHeight();
+    // if(height)
+    height *= zoom;
+    svg = algo.getResult(svg, height);
   }
 
   /**

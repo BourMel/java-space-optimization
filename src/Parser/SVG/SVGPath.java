@@ -339,7 +339,7 @@ public class SVGPath extends XMLAttribute {
    */
   public void translateX(double value) {
     AffineTransform right = new AffineTransform();
-    value *= core.getZoom();
+    // value *= core.getZoom();
 
     right.translate(value, 0);
     if(path != null) path.transform(right);
