@@ -36,6 +36,8 @@ public class Interface extends JFrame {
   private final String INTERFACE_TITLE = "Optimisation de découpe de formes";
   private final int INTERFACE_WIDTH = 650;
   private final int INTERFACE_HEIGHT = 450;
+  private final int DEFAULT_TIMEOUT = 5;
+  private final int DEFAULT_HEIGHT = 2700;
   private final String URI_FILE_LABEL = "URI du fichier SVG :";
   private final String ZOOM_LABEL = "Niveau de zoom";
   private final String HEIGHT_LABEL = "Hauteur du tissu";
@@ -87,6 +89,8 @@ public class Interface extends JFrame {
     zoomLabel.setText(ZOOM_LABEL);
     heightLabel.setText(HEIGHT_LABEL);
     timeoutLabel.setText(TIMEOUT_LABEL);
+    height.setText("" + DEFAULT_HEIGHT);
+    timeout.setText("" + DEFAULT_TIMEOUT);
 
     zoom.addChangeListener(zoomListener);
 
@@ -119,11 +123,6 @@ public class Interface extends JFrame {
             GroupLayout.DEFAULT_SIZE,
             Short.MAX_VALUE)
           .addComponent(logPane)
-          .addComponent(zoomLabel,
-            GroupLayout.DEFAULT_SIZE,
-            200,
-            200)
-          .addComponent(zoom)
           .addComponent(timeoutLabel,
             GroupLayout.DEFAULT_SIZE,
             200,
@@ -133,7 +132,12 @@ public class Interface extends JFrame {
             GroupLayout.DEFAULT_SIZE,
             200,
             200)
-          .addComponent(height))
+          .addComponent(height)
+          .addComponent(zoomLabel,
+            GroupLayout.DEFAULT_SIZE,
+            200,
+            200)
+          .addComponent(zoom))
         .addPreferredGap(ComponentPlacement.RELATED)
         .addComponent(drawingPane,
           GroupLayout.DEFAULT_SIZE,
@@ -161,17 +165,23 @@ public class Interface extends JFrame {
           224,
           Short.MAX_VALUE)
         .addPreferredGap(ComponentPlacement.RELATED)
+        .addComponent(timeoutLabel)
+        .addComponent(timeout,
+          GroupLayout.PREFERRED_SIZE,
+          GroupLayout.DEFAULT_SIZE,
+          GroupLayout.PREFERRED_SIZE)
+        .addComponent(heightLabel)
+        .addComponent(height,
+          GroupLayout.PREFERRED_SIZE,
+          GroupLayout.DEFAULT_SIZE,
+          GroupLayout.PREFERRED_SIZE)
         .addComponent(zoomLabel)
         .addComponent(zoom)
         .addComponent(actionBtn,
           GroupLayout.PREFERRED_SIZE,
           60,
           GroupLayout.PREFERRED_SIZE)
-        .addContainerGap()
-        .addComponent(timeoutLabel)
-        .addComponent(timeout)
-        .addComponent(heightLabel)
-        .addComponent(height))
+        .addContainerGap())
       .addComponent(drawingPane)
     );
 
