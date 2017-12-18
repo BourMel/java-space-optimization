@@ -236,6 +236,8 @@ public class Interface extends JFrame {
     fileChooserBtn.setEnabled(false);
     uriFileText.setEnabled(false);
     zoom.setEnabled(false);
+    timeout.setEnabled(false);
+    height.setEnabled(false);
     actionBtn.setText(">> Recommencer <<");
   }
 
@@ -246,6 +248,8 @@ public class Interface extends JFrame {
     fileChooserBtn.setEnabled(true);
     uriFileText.setEnabled(true);
     zoom.setEnabled(true);
+    timeout.setEnabled(true);
+    height.setEnabled(true);
     actionBtn.setText(">> GO <<");
   }
 
