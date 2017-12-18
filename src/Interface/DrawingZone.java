@@ -74,7 +74,7 @@ public class DrawingZone extends JPanel {
           Path2D path = p.getPath();
           // AffineTransform at = path.getTransform();
           // path.transform(at);
-          gg.draw(path);
+          gg.fill(path);
         }
       }
     }

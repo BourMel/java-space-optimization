@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
  * Singleton et threadsafe
  */
 class Core {
+
   private static Core instance;
   private boolean printDebug = false;
   private Parser parser;
@@ -190,16 +191,4 @@ class Core {
     i.log(str);
   }
 
-  // //actualiser l'affichage
-  // public void display() {
-  //   DrawingZone d = DrawingZone.getInstance();
-  //   d.repaint();
-  //   // d.validate();
-  // }
-
-  // public void changeZoom(int level) {
-  //   svg.scale(level);
-  //   //appeler l'affichage
-  //   display();
-  // }
 }

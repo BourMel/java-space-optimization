@@ -84,7 +84,7 @@ public class SVGPathCollection {
    * @return valeur x la plus faible
    */
    public double getBoundsX() {
-     double minX = 9999999;
+     double minX = Double.MAX_VALUE;
 
      for(SVGPath path : paths) {
        if(path.getPath().getBounds().x < minX) {
@@ -100,7 +100,7 @@ public class SVGPathCollection {
    * @return valeur y la plus faible
    */
    public double getBoundsY() {
-     double minY = 9999999;
+     double minY = Double.MAX_VALUE;
 
      for(SVGPath path : paths) {
        if(path.getPath().getBounds().y < minY) {
