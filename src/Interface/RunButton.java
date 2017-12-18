@@ -44,6 +44,7 @@ public class RunButton extends JButton {
       }
     } else {
       core.log("Arrêt.");
+      core.log("================\n\n");
       core.enableComponents();
       started = false;
     }

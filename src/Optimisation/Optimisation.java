@@ -17,7 +17,7 @@ public class Optimisation {
    * @param maxHeight la hauteur du rouleau
    * @return svg le document traité
    */
-  public SVGDocument getResult(SVGDocument svg, double maxHeight) {
+  public SVGDocument getResult(SVGDocument svg, double maxHeight) throws HeightException {
     Vector<SVGPathCollection> groups = new Vector<SVGPathCollection>();
     groups = svg.getCollections();
 
@@ -30,16 +30,13 @@ public class Optimisation {
     int sizeVect = groups.size();
     SVGPathCollection lastGroup = groups.get(0);
 
-    for(SVGPathCollection group : groups) {
-      //si l'un des groupes ne rentre pas dans la taille indiquée
-      if(group.getHeight() > maxHeight) {
-System.out.println("hauteur trop petite !");
-        //@TODO indiquer une erreur
-        return document;
+    if (maxHeight <= 0) throw new HeightException("La hauteur doit être strictement positive !");
+    for (SVGPathCollection group : groups) {
+      // si l'un des groupes ne rentre pas dans la taille indiquée
+      if (group.getHeight() > maxHeight) {
+        throw new HeightException();
       }
     }
-    System.out.println("hauteur indiquée : maxHeight");
-    System.out.println(maxHeight);
 
     //pour chaque groupe
     for(SVGPathCollection group : groups) {

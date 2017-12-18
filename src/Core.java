@@ -2,6 +2,7 @@ import java.awt.EventQueue;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.JOptionPane;
 
 /**
  * Le Core permet de centraliser l'ensemble des ressources
@@ -57,7 +58,16 @@ class Core {
     svg = parser.parse(url);
     double height = i.getCurrentHeight();
     height *= zoom; //hauteur de rouleau proportionnelle au zoom (résultats visuels constants)
-    svg = algo.getResult(svg, height);
+    try {
+      svg = algo.getResult(svg, height);
+    } catch(HeightException e) {
+      JOptionPane.showMessageDialog(
+        null,
+        e.getMessage(),
+        "Probème avec la hauteur du tissu",
+        JOptionPane.ERROR_MESSAGE
+      );
+    }
   }
 
   /**
