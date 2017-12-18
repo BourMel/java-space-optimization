@@ -253,4 +253,13 @@ public class Interface extends JFrame {
     actionBtn.setText(">> GO <<");
   }
 
+  /**
+   * Permet d'écrire des logs dans la zone prévue à cet effet
+   */
+  public void log(String str) {
+    logText.setText(
+      logText.getText() + "\n" + str
+    );
+  }
+
 }

@@ -173,6 +173,13 @@ class Core {
     i.enableComponents();
   }
 
+  /**
+   * Permet d'écrire des logs dans la zone prévue à cet effet
+   */
+  public void log(String str) {
+    i.log(str);
+  }
+
   // //actualiser l'affichage
   // public void display() {
   //   DrawingZone d = DrawingZone.getInstance();

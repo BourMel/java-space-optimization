@@ -34,13 +34,16 @@ public class RunButton extends JButton {
       String currentFile = core.getSvgUri();
 
       if (!currentFile.isEmpty()) {
+        core.log("Lancement...");
         started = true;
         core.parse(currentFile);
         d.repaint();
         core.disableComponents();
+        core.log("parsing OK");
         core.debug("Contenu parsé :\n" + core.getParsedContent());
       }
     } else {
+      core.log("Arrêt.");
       core.enableComponents();
       started = false;
     }
