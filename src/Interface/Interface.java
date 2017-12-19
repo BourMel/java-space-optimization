@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.WindowConstants;
+import java.text.DecimalFormat;
 
 import java.lang.Double;
 
@@ -56,7 +57,8 @@ public class Interface extends JFrame {
    */
   public void changeZoom(double zoom) {
     if (zoomLabel != null) {
-      zoomLabel.setText(ZOOM_LABEL + " (" + zoom + "x)");
+      DecimalFormat df = new DecimalFormat("#.####");
+      zoomLabel.setText(ZOOM_LABEL + " (" + df.format(zoom) + "x)");
     }
   }
 
@@ -72,7 +74,7 @@ public class Interface extends JFrame {
     logPane = new JScrollPane();
     logText = new JTextPane();
     zoomLabel = new JLabel();
-    zoom = new JSlider(JSlider.HORIZONTAL, -100, 100, 0);
+    zoom = new JSlider(JSlider.HORIZONTAL, -10000, 10000, 0);
     zoomListener = new SliderListener();
     heightLabel = new JLabel();
     height = new JTextField();
@@ -91,6 +93,7 @@ public class Interface extends JFrame {
     timeoutLabel.setText(TIMEOUT_LABEL);
     height.setText("" + DEFAULT_HEIGHT);
     timeout.setText("" + DEFAULT_TIMEOUT);
+uriFileText.setText("/home/ludovic/DEPOTS/projet-poo2/examples/dessin_grp.svg");
 
     zoom.addChangeListener(zoomListener);
 

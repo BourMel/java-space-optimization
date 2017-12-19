@@ -6,6 +6,7 @@ import javax.swing.JButton;
 public class RunButton extends JButton {
 
   private boolean started = false;
+  private boolean optimizing = false;
 
   /**
    * Constructeur du bouton permettant de lancer le parseur
@@ -29,24 +30,34 @@ public class RunButton extends JButton {
   public void runAction() {
     Core core = Core.getInstance();
     core.debug("clic sur le bouton effectué !");
+    DrawingZone d = DrawingZone.getInstance();
     if (!started) {
-      DrawingZone d = DrawingZone.getInstance();
       String currentFile = core.getSvgUri();
 
       if (!currentFile.isEmpty()) {
         core.log("Lancement...");
         started = true;
+        core.log("parsing..");
         core.parse(currentFile);
         d.repaint();
         core.disableComponents();
-        core.log("parsing OK");
+        setText(">> Optimiser <<");
         core.debug("Contenu parsé :\n" + core.getParsedContent());
       }
     } else {
-      core.log("Arrêt.");
-      core.log("================\n\n");
-      core.enableComponents();
-      started = false;
+      if (optimizing) {
+        core.log("Arrêt.");
+        core.log("================\n\n");
+        core.enableComponents();
+        optimizing = false;
+        started = false;
+      } else {
+        setText(">> STOP <<");
+        optimizing = true;
+        d.repaint();
+        core.optimize();
+        d.repaint();
+      }
     }
   }
 }

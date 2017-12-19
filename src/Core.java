@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 class Core {
 
   private static Core instance;
-  private boolean printDebug = false;
+  private boolean printDebug = true;
   private Parser parser;
   private Interface i;
   private double zoom = 1; // zoom level
@@ -26,7 +26,7 @@ class Core {
     // initialisation du parseur
     parser = new Parser();
     // et de l'algo d'optimisation
-    algo = new Optimisation();
+    algo = new Optimisation(this);
 
     // initialisation de l'UI
     changeLookDefaultUI();
@@ -57,17 +57,25 @@ class Core {
    */
   public void parse(String url) {
     svg = parser.parse(url);
-    double height = i.getCurrentHeight();
-    height *= zoom; //hauteur de rouleau proportionnelle au zoom (résultats visuels constants)
-    try {
-      svg = algo.getResult(svg, height);
-    } catch(HeightException e) {
-      JOptionPane.showMessageDialog(
-        null,
-        e.getMessage(),
-        "Probème avec la hauteur du tissu",
-        JOptionPane.ERROR_MESSAGE
-      );
+  }
+
+  /**
+   * Optimise le SVG
+   */
+  public void optimize() {
+    if (svg != null) {
+      double height = i.getCurrentHeight();
+      height *= zoom; //hauteur de rouleau proportionnelle au zoom (résultats visuels constants)
+      try {
+        svg = algo.getResult(svg, height);
+      } catch(HeightException e) {
+        JOptionPane.showMessageDialog(
+          null,
+          e.getMessage(),
+          "Probème avec la hauteur du tissu",
+          JOptionPane.ERROR_MESSAGE
+        );
+      }
     }
   }
 

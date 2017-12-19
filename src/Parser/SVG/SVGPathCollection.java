@@ -111,6 +111,38 @@ public class SVGPathCollection {
      return minY;
    }
 
+  /**
+   * Récupère le point le plus à droite du groupe
+   * @return valeur x la plus haute
+   */
+   public double getMaxBoundsX() {
+     double maxX = 0;
+
+     for (SVGPath path : paths) {
+       if (path.getPath().getBounds().x > maxX) {
+         maxX = path.getPath().getBounds().x;
+       }
+     }
+
+     return maxX;
+   }
+
+  /**
+   * Récupère le point le plus bas du groupe
+   * @return valeur y la plus haute
+   */
+   public double getMaxBoundsY() {
+     double maxY = 0;
+
+     for (SVGPath path : paths) {
+       if (path.getPath().getBounds().y > maxY) {
+         maxY = path.getPath().getBounds().y;
+       }
+     }
+
+     return maxY;
+   }
+
    /**
     * Récupère la hauteur du groupe
     * @result double

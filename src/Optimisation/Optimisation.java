@@ -1,14 +1,33 @@
 import java.util.Vector;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 
 public class Optimisation {
 
   private SVGDocument document;
+  private Core core;
 
   /**
    * Constructeur
    */
-  public Optimisation() {
-    //
+  public Optimisation(Core core) {
+    this.core = core;
+  }
+
+  // retourne le X actuel
+  public double getCurrentX(Vector<SVGPathCollection> groups) {
+    double res = 0;
+    for (SVGPathCollection group : groups) {
+      double max = group.getMaxBoundsX();
+      if (max > res) res = max;
+    }
+    return res;
+  }
+
+  // affiche le X
+  public void printCX(double cx) {
+    core.log("X = " + (cx / core.getZoom()));
+    core.log("X (scaled) = " + cx);
   }
 
   /**
@@ -45,7 +64,8 @@ public class Optimisation {
     double colWidth = 0;
     int sizeVect = groups.size();
     SVGPathCollection lastGroup = groups.get(0);
-    Core core = Core.getInstance();
+
+    double x_before, x_after;
 
     int x_max = 0;
 
@@ -59,7 +79,10 @@ public class Optimisation {
       x_max += group.getWidth();
     }
 
-    core.log("Xmax = " + x_max);
+    core.log("Xmax = " + (x_max / core.getZoom()));
+    core.log("Xmax (scaled) = " + x_max);
+    x_before = getCurrentX(groups);
+    printCX(x_before);
     core.log("Optimisation...");
 
     // pour chaque groupe
@@ -153,6 +176,46 @@ public class Optimisation {
       // heightBefore += group.getHeight();
 
     }
+
+    x_after = getCurrentX(groups);
+    printCX(x_after);
+
+    core.log("gain = " + (100 - ((x_after * 100) / x_before)) + "%");
+
+    // // Algo qui casse sur complexe 2 par exemple.. :(
+    // Rectangle2D borderLeft = new Rectangle2D.Double(2, Integer.MAX_VALUE, 0, 0);
+    // double cx = getCurrentX(groups);
+    // for (int i = 0; i < longueur; i++) {
+    //   boolean collision = false;
+    //   int maxMoves = 5000;
+    //   while (!collision && maxMoves > 0) {
+    //     for (int j = 0; j < longueur; j++) {
+    //       if (i != j) {
+    //         for (SVGPath ipath : groups.get(i).getPaths()) {
+    //           for (SVGPath jpath : groups.get(j).getPaths()) {
+    //             Area iarea = new Area(ipath.getPath());
+    //             Area jarea = new Area(jpath.getPath());
+    //             iarea.intersect(jarea);
+    //             collision = !iarea.isEmpty() || groups.get(i).getBoundsX() == 0;
+    //           }
+    //         }
+    //         if (!collision) {
+    //           groups.get(i).translate(-1, 0);
+    //           // DrawingZone.getInstance().repaint();
+    //           // double n_cx = getCurrentX(groups);
+    //           // if (n_cx < cx) {
+    //           //   cx = n_cx;
+    //           //   printCX(cx);
+    //           // }
+    //           maxMoves--;
+    //         } else {
+    //           break;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+
     return svg;
   }
 }

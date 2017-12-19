@@ -23,6 +23,8 @@ public class DrawingZone extends JPanel {
   private Vector<SVGPathCollection> collections;
   private Core core;
 
+  private double currentX = 0, currentY = 0;
+
   /**
    * Constructeur de l'emplacement où le SVG s'affiche
    */
@@ -54,7 +56,7 @@ public class DrawingZone extends JPanel {
 
     // on améliore les traits (on les rends plus arrondis)
     gg.setStroke(
-      new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
+      new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND)
     );
 
     // on active l'antialiasing
@@ -66,22 +68,44 @@ public class DrawingZone extends JPanel {
     // AffineTransform at = new AffineTransform();
     // at.scale(.2, .2);
 
+    // double maxX = 0, maxY = 0;
+
     SVGDocument svg = core.getSVG();
     if (svg != null) {
       collections = svg.getCollections();
       for (SVGPathCollection c : collections) {
+
+        // // calcul du plus grand x et y
+        // double maxBX = c.getMaxBoundsX();
+        // double maxBY = c.getMaxBoundsY();
+        // if (maxX < maxBX) maxX = maxBX;
+        // if (maxY < maxBY) maxY = maxBY;
+
         for (SVGPath p : c.getPaths()) {
+
           Path2D path = p.getPath();
           // AffineTransform at = path.getTransform();
           // path.transform(at);
           gg.fill(path);
         }
       }
+      // if (currentX != maxX || currentY != maxY) {
+      //   currentX = maxX;
+      //   currentY = maxY;
+      //   resizeZone(maxX / core.getZoom(), maxY / core.getZoom());
+      // }
     }
 
   }
 
   public void resizeZone(int x, int y) {
     setPreferredSize(new Dimension(x, y));
+    // repaint();
   }
+
+  // public void resizeZone(double x, double y) {
+  //   System.out.println(" == " + x + " == " + y);
+  //   setPreferredSize(new Dimension((int) x + 1, (int) y + 1));
+  //   repaint();
+  // }
 }

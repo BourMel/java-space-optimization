@@ -22,13 +22,13 @@ public class SliderListener implements ChangeListener {
     JSlider source = (JSlider) e.getSource();
 
     if (source.getValueIsAdjusting()) {
-      double value = (double) source.getValue();
+      double value = (double) source.getValue() / 100;
       double zoom = 1;
       if (value < 0) {
         zoom = (value + 100) / 100;
-        if (zoom < 0.01) zoom = 0.01;
+        if (zoom < 0.2) zoom = 0.2;
       } else if (value > 0) {
-        zoom = value / 10;
+        zoom = value / 20;
         if (zoom < 1) zoom = 1;
       }
       core.debug("zoom=" + zoom);
