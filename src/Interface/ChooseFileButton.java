@@ -33,6 +33,8 @@ public class ChooseFileButton extends JButton {
     core.debug("Instanciation de la boîte de dialogue");
 
     JFileChooser importFile = new JFileChooser();
+    File workingDirectory = new File(System.getProperty("user.dir") + "/examples/");
+    importFile.setCurrentDirectory(workingDirectory);
     importFile.showOpenDialog(null); // affiche
     choosedFile = importFile.getSelectedFile();
 

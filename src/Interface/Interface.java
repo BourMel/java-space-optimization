@@ -93,7 +93,6 @@ public class Interface extends JFrame {
     timeoutLabel.setText(TIMEOUT_LABEL);
     height.setText("" + DEFAULT_HEIGHT);
     timeout.setText("" + DEFAULT_TIMEOUT);
-uriFileText.setText("/home/ludovic/DEPOTS/projet-poo2/examples/dessin_grp.svg");
 
     zoom.addChangeListener(zoomListener);
 
