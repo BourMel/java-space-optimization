@@ -86,7 +86,8 @@ public class DrawingZone extends JPanel {
           Path2D path = p.getPath();
           // AffineTransform at = path.getTransform();
           // path.transform(at);
-          gg.fill(path);
+          // gg.fill(path);
+          gg.draw(path);
         }
       }
       // if (currentX != maxX || currentY != maxY) {
